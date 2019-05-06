@@ -28,7 +28,7 @@ The technology that enables this is called [Signed HTTP Exchanges](https://devel
 
 Websites can add support for signed exchanges by running [AMP Packager](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/signed-exchange) on the server side. Cloudflare has launched a free feature called “[AMP Real URL](https://blog.cloudflare.com/announcing-amp-real-url/)” that fully automates the signing process for AMP pages served from its CDN.
 
-## Third-party iOS browsers
+## Alternative iOS browsers
 
 [Henrik Joreteg](https://mobile.twitter.com/HenrikJoreteg/status/1111853724081610753): On iOS, several important APIs are limited to Safari and are not available in any of the <mark>alternative iOS browsers</mark>. These include service workers, web payments, and camera access.
 
