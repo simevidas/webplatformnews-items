@@ -14,7 +14,7 @@
 
 ## Instilling a performance culcure at The Telegraph
 
-- [Gareth Clubb](https://mobile.twitter.com/digitalclubb/status/1123245409953034240): At The Telegraph (a major UK newspaper), we set up a web performance working group to tackle our “organizational” performance challenges and instill a performance culture. The group meets regularly to review third-party tags and work on improving our site’s performance.
+[Gareth Clubb](https://mobile.twitter.com/digitalclubb/status/1123245409953034240): At The Telegraph (a major UK newspaper), we set up a web performance working group to tackle our “organizational” performance challenges and instill a performance culture. The group meets regularly to review third-party tags and work on improving our site’s performance.
 
 We’ve started deferring all JavaScript (including our own) using the `<script defer>` attribute. This change alone nearly doubled our (unthrottled) Lighthouse performance score.
 
@@ -26,7 +26,7 @@ We also removed 1 MB of third-party payload from our new front end. When one of 
   
 ## Microsoft plans to add tracking prevention to the Edge browser
 
-- [Kyle Pflug](https://blogs.windows.com/msedgedev/2019/05/06/edge-chromium-build-2019-pwa-ie-mode-devtools/): Microsoft has announced plans to add options for <mark>blocking trackers</mark> to the Edge browser. Malicious trackers would be blocked automatically, and the user would have the option to additionally block _all_ potential trackers.
+[Kyle Pflug](https://blogs.windows.com/msedgedev/2019/05/06/edge-chromium-build-2019-pwa-ie-mode-devtools/): Microsoft has announced plans to add options for <mark>blocking trackers</mark> to the Edge browser. Malicious trackers would be blocked automatically, and the user would have the option to additionally block _all_ potential trackers.
 
 ![](/media/edge-tracking-prevention.jpg)
 
