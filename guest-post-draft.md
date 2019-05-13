@@ -1,37 +1,41 @@
-# Weekly news: Feature Policy, Signed Exchanges, iOS browsers
+# Weekly news: 
 
 `<EDITOR_INTRO>`  
 Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
 `</EDITOR_INTRO>`
 
-## Feature Policy in Chrome
+## Installed PWAs on iOS cannot easily be restared
 
-[Andrew Betts](https://www.fastly.com/blog/feature-policy-webs-missing-guardrails): Websites can use the HTTP `Feature-Policy` response header to prevent third parties from secretly using powerful features such as geolocation, and to disable certain bad practices (e.g., `document.write`, parser-blocking JavaScript, unoptimized images).
+[Maximiliano Firtman](https://mobile.twitter.com/firt/status/1110649483614961669): On iOS, it is not possible to restart an installed PWA by closing it from the [_recently used apps_ screen](https://support.apple.com/en-us/HT201330) and then immediately reopening it. Instead of restarting the app, iOS restores its state. This can be a problem for users if the PWA gets stuck in a broken state ([example](https://mobile.twitter.com/croozeus/status/1116194635242598400)).
 
-> This allows good practices to be more easily rewarded. … Search results could be badged with some approving “fast” logomark or (more controversially perhaps) get a higher result ranking if they disallow themselves certain policy-controlled behaviours.
+> After some undefined time, the saved context seems to disappear. So if you get out of the PWA, do nothing with your phone and wait some hours to go back to the PWA, it restarts from scratch.
 
-**Note:** Feature Policy is an emerging technology. See [featurepolicy.info](https://featurepolicy.info/) for more information about individual policies and their level of support in browsers.
+![](/media/ios-pwa-restart.png)
 
-## Signed exchanges on Google Search
+## Instilling a performance culcure at The Telegraph
 
-The mobile version of Google Search includes AMP results on search results pages. When the user taps on an AMP result, the AMP page loads from Google’s domain (`google.com`) and is displayed in the [AMP Viewer](https://developers.google.com/search/docs/guides/about-amp).
+- [Gareth Clubb](https://mobile.twitter.com/digitalclubb/status/1123245409953034240): At The Telegraph (a major UK newspaper), we set up a web performance working group to tackle our “organizational” performance challenges and instill a performance culture. The group meets regularly to review third-party tags and work on improving our site’s performance.
 
-![](/media/amp-viewer.png)
+We’ve started deferring all JavaScript (including our own) using the `<script defer>` attribute. This change alone nearly doubled our (unthrottled) Lighthouse performance score.
 
-Google Search now supports an alternative: If a website signs its AMP pages, and the visitor uses Chrome for Android, then tapping on an AMP result instead loads the signed version of the AMP page from Google’s servers, but to the user it appears as if they have navigated to the website normally.
+> Deferring our JavaScript hasn’t skewed any existing analytics and it certainly hasn’t delayed any advertising. … The First Ad Loaded metric improved by an average of four seconds.
 
-![](/media/signed-exchange.png)
+We also removed 1 MB of third-party payload from our new front end. When one of our teams requests the addition of any new script, we now test the script in isolation and reject it if it degrades our metrics (first contentful paint, etc.).
 
-The technology that enables this is called [Signed HTTP Exchanges](https://developers.google.com/web/updates/2018/11/signed-exchanges) (SXG). See the [announcement](https://webmasters.googleblog.com/2019/04/instant-loading-amp-pages-from-your-own.html) on Google Webmaster Central Blog for more details. The [specification](https://tools.ietf.org/html/draft-yasskin-http-origin-signed-responses-05) describes the following use case:
+> When we started this process, we had a collection of very old scripts and couldn’t track the original requester. We removed those on the premise that, if they were important, people would get back in touch — no one did.
+  
+## Microsoft plans to add tracking prevention to the Edge browser
 
-> In order to speed up loading but still maintain control over its content, an HTML page in a particular origin “O.com” could tell clients to load its subresources from an intermediate content distributor that’s not authoritative, but require that those resources be signed by “O.com” so that the distributor couldn’t modify the resources.
+- [Kyle Pflug](https://blogs.windows.com/msedgedev/2019/05/06/edge-chromium-build-2019-pwa-ie-mode-devtools/): Microsoft has announced plans to add options for <mark>blocking trackers</mark> to the Edge browser. Malicious trackers would be blocked automatically, and the user would have the option to additionally block _all_ potential trackers.
 
-Websites can add support for signed exchanges by running [AMP Packager](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/signed-exchange) on the server side. Cloudflare has launched a free feature called “[AMP Real URL](https://blog.cloudflare.com/announcing-amp-real-url/)” that fully automates the signing process for AMP pages served from its CDN.
+![](/media/edge-tracking-prevention.jpg)
 
-## Alternative iOS browsers
+**Note:** This would make Edge the _fourth_ major browser with some form of built-in anti-tracking feature (two other major browsers, Opera and UC Browser, include ad blockers instead).
 
-[Henrik Joreteg](https://mobile.twitter.com/HenrikJoreteg/status/1111853724081610753): On iOS, several important APIs are limited to Safari and are not available in any of the alternative iOS browsers. These include service workers, web payments, and camera access.
+1. In 2015, Firefox added [Tracking Protection](https://blog.mozilla.org/futurereleases/2015/09/23/help-test-private-browsing-with-tracking-protection-in-firefox-beta/) — recently renamed to Content Blocking — becoming the first major browser to protect users from third-party trackers (when browsing the web in private mode).
 
-**Note:** Chrome for iOS supports web payments via a [custom implementation](https://nielsleenheer.com/articles/2017/about-chrome-ios-and-payment-request/). I’ve created a [browser support table](https://html5test.com/compare/browser/ac70c543eaf34147/47955043eaf4e9aa/13c1af43eafb15e8/c509b443eaff324e/6d0d3d43eb01ac6b.html) on HTML5test that highlights the differences between some of the popular iOS browsers.
+1. Since 2017, Safari prevents cross-site tracking by default, through a feature called [Intelligent Tracking Prevention](https://webkit.org/blog/7675/intelligent-tracking-prevention/) (ITP). Users are prompted to allow tracking when they try to interact with third-party widgets on websites.
 
-![](/media/ios-browser-support-table.png)
+   ![](/media/safari-tracking-prompt.png)
+
+1. Earlier this year, Samsung Internet added an experimental feature called [Smart Anti-Tracking](https://medium.com/samsung-internet-dev/new-year-new-samsung-internet-b74f282e4429) that denies third-party trackers access to cookies.
