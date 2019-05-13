@@ -4,7 +4,7 @@
 Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
 `</EDITOR_INTRO>`
 
-## Installed PWAs on iOS cannot easily be restared
+## Installed PWAs on iOS cannot easily be restarted
 
 [Maximiliano Firtman](https://mobile.twitter.com/firt/status/1110649483614961669): On iOS, it is not possible to restart an installed PWA by closing it from the [_recently used apps_ screen](https://support.apple.com/en-us/HT201330) and then immediately reopening it. Instead of restarting the app, iOS restores its state. This can be a problem for users if the PWA gets stuck in a broken state ([example](https://mobile.twitter.com/croozeus/status/1116194635242598400)).
 
