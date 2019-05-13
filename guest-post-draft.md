@@ -12,7 +12,7 @@
 
 ![](/media/ios-pwa-restart.png)
 
-## Instilling a performance culcure at The Telegraph
+## Instilling a performance culture at The Telegraph
 
 [Gareth Clubb](https://mobile.twitter.com/digitalclubb/status/1123245409953034240): At The Telegraph (a major UK newspaper), we set up a web performance working group to tackle our “organizational” performance challenges and instill a performance culture. The group meets regularly to review third-party tags and work on improving our site’s performance.
 
