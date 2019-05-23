@@ -24,27 +24,27 @@ Mozilla WebThings is an alternative approach to the Internet of Things that stor
 
 ## Other interesting articles
 
-- [Introducing the first Microsoft Edge preview builds for macOS](https://blogs.windows.com/msedgedev/2019/05/20/microsoft-edge-macos-canary-preview/)
+- **[Introducing the first Microsoft Edge preview builds for macOS](https://blogs.windows.com/msedgedev/2019/05/20/microsoft-edge-macos-canary-preview/)**
 
   Edge Canary (analogous to Chrome Canary) is now officially available on macOS. This version of Edge updates daily.
 
   > With our new Chromium foundation, you can expect a consistent rendering experience across the Windows and macOS versions of Microsoft Edge.
 
-- [#EmberJS2019 More Accessible Than Ever](https://yehudakatz.com/2019/05/20/ember-2019/)
+- **[#EmberJS2019 More Accessible Than Ever](https://yehudakatz.com/2019/05/20/ember-2019/)**
 
   > Navigating from one page to another in a client-side web app provides no feedback by default in virtually all popular routing solutions across the client-side ecosystem.
 
   Their goal is to make Ember’s router more accessible and screen reader friendly.
 
-- [Opinion: Five developer trends to watch in 2019](https://www.developer-tech.com/news/2019/may/16/opinion-five-developer-trends-2019/)
+- **[Opinion: Five developer trends to watch in 2019](https://www.developer-tech.com/news/2019/may/16/opinion-five-developer-trends-2019/)**
 
   The article includes a good, short explanation of what GraphQL is and what problems it solves.
 
-- [Part 2: What the Fr(action)?](https://css-irl.info/debugging-css-grid-part-2-what-the-fraction/)
+- **[Part 2: What the Fr(action)?](https://css-irl.info/debugging-css-grid-part-2-what-the-fraction/)**
 
   Read the last section (“Intrinsic and extrinsic sizing“). All three columns have the size `1fr` but the middle one is wider because of its content. This can be prevented by using the size `minmax(0, 1fr)` instead.
 
-- [Parallel streaming of progressive images](https://blog.cloudflare.com/parallel-streaming-of-progressive-images/)
+- **[Parallel streaming of progressive images](https://blog.cloudflare.com/parallel-streaming-of-progressive-images/)**
 
   Instead of loading from top to bottom, progressive images appear blurry at first and become sharper as more data loads.
 
