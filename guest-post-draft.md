@@ -1,41 +1,51 @@
-# Weekly news: PWA issue on iOS, performance culture, anti-tracking in browsers
+# Weekly news: Mozilla WebThings, Internet Explorer mode, GraphQL
 
 `<EDITOR_INTRO>`  
 Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
 `</EDITOR_INTRO>`
 
-## Installed PWAs cannot easily be restarted on iOS
+## Mozilla WebThings provides complete privacy for user data
 
-[Maximiliano Firtman](https://mobile.twitter.com/firt/status/1110649483614961669): On iOS, it is not possible to restart an installed PWA by closing it from the [_recently used apps_ screen](https://support.apple.com/en-us/HT201330) and then immediately reopening it. Instead of restarting the app, iOS restores its state. This can be a problem for users if the PWA gets stuck in a broken state ([example](https://mobile.twitter.com/croozeus/status/1116194635242598400)).
+[Josephine Lau](https://mobile.twitter.com/mozhacks/status/1129451585686441987): Smart home companies require that users’ data goes through their servers, which means that people are giving up their privacy for the convenience of a smart home device (e.g., smart light bulb).
 
-> After some undefined time, the saved context seems to disappear. So if you get out of the PWA, do nothing with your phone and wait some hours to go back to the PWA, it restarts from scratch.
+> We’ve learned that people are concerned about the privacy of their smart home data. And yet, when there’s no alternative, they feel the need to trade away their privacy for convenience.
 
-![](/media/ios-pwa-restart.png)
+Mozilla WebThings is an alternative approach to the Internet of Things that stores user data in the user’s home. Devices can be controlled locally via a web interface, and the data is tunneled through a private HTTPS connection.
 
-## Instilling a performance culture at The Telegraph
+![A diagram showing how Mozilla doesn’t store user data in the cloud, unlike smart home vendors](/media/mozilla-webthings-framework.png)
 
-[Gareth Clubb](https://mobile.twitter.com/digitalclubb/status/1123245409953034240): At The Telegraph (a major UK newspaper), we set up a web performance working group to tackle our “organizational” performance challenges and instill a performance culture. The group meets regularly to review third-party tags and work on improving our site’s performance.
+## An Internet Explorer mode is coming to Edge
 
-We’ve started deferring all JavaScript (including our own) using the `<script defer>` attribute. This change alone nearly doubled our (unthrottled) Lighthouse performance score.
+[Fred Pullen](https://mobile.twitter.com/MSEdgeDev/status/1129505305719496704): The next version of Edge will include an Internet Explorer mode for backward compatibility with legacy websites. Edge will also for the first time be available on older versions of Windows (incl. Windows 7 and 8.1).
 
-> Deferring our JavaScript hasn’t skewed any existing analytics and it certainly hasn’t delayed any advertising. … The First Ad Loaded metric improved by an average of four seconds.
+> By introducing Internet Explorer mode, we’re effectively blurring the lines between the browsers. From an end-user standpoint, it seems like a single browser. … You can use IE mode to limit the sites that instantiate Internet Explorer just to the sites that you approved.
 
-We also removed 1 MB of third-party payload from our new front end. When one of our teams requests the addition of any new script, we now test the script in isolation and reject it if it degrades our metrics (first contentful paint, etc.).
+<video controls src="/media/edge-ie-mode.mp4"></video>
 
-> When we started this process, we had a collection of very old scripts and couldn’t track the original requester. We removed those on the premise that, if they were important, people would get back in touch — no one did.
-  
-## Microsoft plans to add tracking prevention to the Edge browser
+## Other interesting articles
 
-[Kyle Pflug](https://blogs.windows.com/msedgedev/2019/05/06/edge-chromium-build-2019-pwa-ie-mode-devtools/): Microsoft has announced plans to add options for <mark>blocking trackers</mark> to the Edge browser. Malicious trackers would be blocked automatically, and the user would have the option to additionally block _all_ potential trackers.
+- [Introducing the first Microsoft Edge preview builds for macOS](https://blogs.windows.com/msedgedev/2019/05/20/microsoft-edge-macos-canary-preview/)
 
-![](/media/edge-tracking-prevention.jpg)
+  Edge Canary (analogous to Chrome Canary) is now officially available on macOS. This version of Edge updates daily.
 
-**Note:** This would make Edge the _fourth_ major browser with some form of built-in anti-tracking feature (two other major browsers, Opera and UC Browser, include ad blockers instead).
+  > With our new Chromium foundation, you can expect a consistent rendering experience across the Windows and macOS versions of Microsoft Edge.
 
-1. In 2015, Firefox added [Tracking Protection](https://blog.mozilla.org/futurereleases/2015/09/23/help-test-private-browsing-with-tracking-protection-in-firefox-beta/) — recently renamed to Content Blocking — becoming the first major browser to protect users from third-party trackers (when browsing the web in private mode).
+- [#EmberJS2019 More Accessible Than Ever](https://yehudakatz.com/2019/05/20/ember-2019/)
 
-1. Since 2017, Safari prevents cross-site tracking by default, through a feature called [Intelligent Tracking Prevention](https://webkit.org/blog/7675/intelligent-tracking-prevention/) (ITP). Users are prompted to allow tracking when they try to interact with third-party widgets on websites.
+  > Navigating from one page to another in a client-side web app provides no feedback by default in virtually all popular routing solutions across the client-side ecosystem.
 
-   ![](/media/safari-tracking-prompt.png)
+  Their goal is to make Ember’s router more accessible and screen reader friendly.
 
-1. Earlier this year, Samsung Internet added an experimental feature called [Smart Anti-Tracking](https://medium.com/samsung-internet-dev/new-year-new-samsung-internet-b74f282e4429) that denies third-party trackers access to cookies.
+- [Opinion: Five developer trends to watch in 2019](https://www.developer-tech.com/news/2019/may/16/opinion-five-developer-trends-2019/)
+
+  The article includes a good, short explanation of what GraphQL is and what problems it solves.
+
+- [Part 2: What the Fr(action)?](https://css-irl.info/debugging-css-grid-part-2-what-the-fraction/)
+
+  Read the last section (“Intrinsic and extrinsic sizing“). All three columns have the size `1fr` but the middle one is wider because of its content. This can be prevented by using the size `minmax(0, 1fr)` instead.
+
+- [Parallel streaming of progressive images](https://blog.cloudflare.com/parallel-streaming-of-progressive-images/)
+
+  Instead of loading from top to bottom, progressive images appear blurry at first and become sharper as more data loads.
+
+  > The benefits of progressive rendering are unique to JPEG (supported in all browsers) and JPEG 2000 (supported in Safari). GIF and PNG have interlaced modes, but these modes come at a cost of worse compression. WebP doesn't even support progressive rendering at all. This creates a dilemma: WebP is usually 20%-30% smaller than a JPEG of equivalent quality, but progressive JPEG appears to load 50% faster.
