@@ -1,51 +1,44 @@
-# Weekly news: Mozilla WebThings, Internet Explorer mode, GraphQL
+# Weekly news: Favicon guidelines, accessibility testing,
 
 `<EDITOR_INTRO>`  
 Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
 `</EDITOR_INTRO>`
 
-## Mozilla WebThings provides complete privacy for user data
+## Google posts guidelines for defining favicons
 
-[Josephine Lau](https://mobile.twitter.com/mozhacks/status/1129451585686441987): Smart home companies require that users’ data goes through their servers, which means that people are giving up their privacy for the convenience of a smart home device (e.g., smart light bulb).
+[Jamie Leach](https://www.blog.google/products/search/new-design-google-search/): Google Search now displays <mark>favicons in search results</mark> on mobile. Your favicon should be a multiple of 48×48 (Google will rescale it to 16×16 for use in search results). If a website doesn’t have a favicon or Google deems the favicon inappropriate, a generic globe icon will be displayed instead.
 
-> We’ve learned that people are concerned about the privacy of their smart home data. And yet, when there’s no alternative, they feel the need to trade away their privacy for convenience.
+![](/media/google-search-favicon.png)
 
-Mozilla WebThings is an alternative approach to the Internet of Things that stores user data in the user’s home. Devices can be controlled locally via a web interface, and the data is tunneled through a private HTTPS connection.
+> Your favicon should be a visual representation of your website’s brand, in order to help users quickly identify your site when they scan through search results.
 
-![A diagram showing how Mozilla doesn’t store user data in the cloud, unlike smart home vendors](/media/mozilla-webthings-framework.png)
+**Note:** Top websites are surprisingly inconsistent in the way they declare icons (via `<link>` elements in the page’s head). Twitter and Pinterest, two relatively modern progressive web apps, provide icons in two sizes.
 
-## An Internet Explorer mode is coming to Edge
+<!-- prettier-ignore -->
+```html
+<!-- example -->
+<link rel="icon" href="/icon-32x32.png">
+<link rel="apple-touch-icon" href="/icon-192x192.png">
+```
 
-[Fred Pullen](https://mobile.twitter.com/MSEdgeDev/status/1129505305719496704): The next version of Edge will include an Internet Explorer mode for backward compatibility with legacy websites. Edge will also for the first time be available on older versions of Windows (incl. Windows 7 and 8.1).
+## The Paciello Group releases ARC Toolkit
 
-> By introducing Internet Explorer mode, we’re effectively blurring the lines between the browsers. From an end-user standpoint, it seems like a single browser. … You can use IE mode to limit the sites that instantiate Internet Explorer just to the sites that you approved.
+[The Paciello Group](https://mobile.twitter.com/paciellogroup/status/1129013674675449864): ARC Toolkit, our professional-level <mark>accessibility testing</mark> tool, is now available as a Chrome DevTools extension. This tool detects issues related to the [WCAG 2.1 guidelines](https://w3c.github.io/wcag/21/guidelines/). You can run the test on the entire page or just the node selected in the DevTools Elements panel.
 
-<video controls src="/media/edge-ie-mode.mp4"></video>
+<video controls src="/media/arc-toolkit-demo.mp4"></video>
 
-## Other interesting articles
+**Note:** Automated accessibility tools are only able to find _some_ accessibility issues, and manual testing is necessary to ensure full accessibility. Lighthouse (Audits panel) suggests manual checks after performing an accessibility audit.
 
-- **[Introducing the first Microsoft Edge preview builds for macOS](https://blogs.windows.com/msedgedev/2019/05/20/microsoft-edge-macos-canary-preview/)**
+![](/media/lighthouse-manual-audits.png)
 
-  Edge Canary (analogous to Chrome Canary) is now officially available on macOS. This version of Edge updates daily.
+## Other news
 
-  > With our new Chromium foundation, you can expect a consistent rendering experience across the Windows and macOS versions of Microsoft Edge.
+- [Jeff Jaffe](https://www.w3.org/blog/2019/05/w3c-and-whatwg-to-work-together-to-advance-the-open-web-platform/): W3C and WHATWG have reached an agreement to collaborate on the development of HTML. “W3C shall encourage the community … to contribute directly to the **WHATWG HTML and DOM repositories**; raising issues, proposing solutions, commenting on proposed solutions, and indicating support or otherwise for proposals.“
 
-- **[#EmberJS2019 More Accessible Than Ever](https://yehudakatz.com/2019/05/20/ember-2019/)**
+- [Paul Calvano](https://discuss.httparchive.org/t/analyzing-resource-age-by-content-type/1659): “There is a significant gap in the first- vs. third-party resource age of CSS and web fonts. 95% of first-party fonts are older than one week compared to 50% of third-party fonts … This makes a strong case for **self-hosting web fonts**s!”
 
-  > Navigating from one page to another in a client-side web app provides no feedback by default in virtually all popular routing solutions across the client-side ecosystem.
+- [Rachel Andrew](https://www.smashingmagazine.com/2019/05/display-grid-subgrid/): The **CSS `subgrid` value** is a relatively straightforward addition to grid layout. For example, if you have nested grids, and you apply `grid-template-rows: subgrid` to the child grid, then this grid will use the row tracks of the parent grid instead of creating its own row tracks. That’s all there is to it. (This feature is currently only supported in Firefox Nightly.)
 
-  Their goal is to make Ember’s router more accessible and screen reader friendly.
+* [GitHub Blog](https://github.blog/2019-05-23-introducing-new-ways-to-keep-your-code-secure/): GitHub can now generate automated security fixes for your dependencies with known security vulnerabilities. On GitHub’s website, check your repository’s Security tab for security alerts. If you open an alert and press the **“Create automated security fix” button**, GitHub will create an automated pull request that fixes the security vulnerability.
 
-- **[Opinion: Five developer trends to watch in 2019](https://www.developer-tech.com/news/2019/may/16/opinion-five-developer-trends-2019/)**
-
-  The article includes a good, short explanation of what GraphQL is and what problems it solves.
-
-- **[Part 2: What the Fr(action)?](https://css-irl.info/debugging-css-grid-part-2-what-the-fraction/)**
-
-  Read the last section (“Intrinsic and extrinsic sizing“). All three columns have the size `1fr` but the middle one is wider because of its content. This can be prevented by using the size `minmax(0, 1fr)` instead.
-
-- **[Parallel streaming of progressive images](https://blog.cloudflare.com/parallel-streaming-of-progressive-images/)**
-
-  Instead of loading from top to bottom, progressive images appear blurry at first and become sharper as more data loads.
-
-  > The benefits of progressive rendering are unique to JPEG (supported in all browsers) and JPEG 2000 (supported in Safari). GIF and PNG have interlaced modes, but these modes come at a cost of worse compression. WebP doesn't even support progressive rendering at all. This creates a dilemma: WebP is usually 20%-30% smaller than a JPEG of equivalent quality, but progressive JPEG appears to load 50% faster.
+* [Rick Viscomi](https://dev.to/rick_viscomi/introducing-the-web-almanac-6dl): HTTP Archive plans to release the first annual **Web Almanac** in November, a report of the state of the web with interesting insights written by different experts. About 50 volunteers from the web community are currently working on it, and they are looking for more contributors.
