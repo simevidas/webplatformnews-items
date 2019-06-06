@@ -1,44 +1,41 @@
-# Weekly news: Favicon guidelines, accessibility testing, Web Almanac
+# Weekly news: Feature Policy, ECMAScript `Intl` API, packaged PWAs
 
 `<EDITOR_INTRO>`  
 Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
 `</EDITOR_INTRO>`
 
-## Google posts guidelines for defining favicons
+## New Feature Policy API in Chrome
 
-[Jamie Leach](https://www.blog.google/products/search/new-design-google-search/): Google Search now displays favicons in search results on mobile. Your favicon should be a multiple of 48×48 (Google will rescale it to 16×16 for use in search results). If a website doesn’t have a favicon or Google deems the favicon inappropriate, a generic globe icon will be displayed instead.
+[Pete LePage](https://developers.google.com/web/updates/2019/04/nic74): You can use the `document.featurePolicy.allowedFeatures` method in Chrome to get a list of all Feature Policy-controlled features that are allowed on the current page.
 
-![](/media/google-search-favicon.png)
+![](/media/feature-policy-allowed-features.png)
 
-> Your favicon should be a visual representation of your website’s brand, in order to help users quickly identify your site when they scan through search results.
+**Note:** This API can be useful when implementing a feature policy (and updating an existing feature policy) on your website.
 
-**Note:** Top websites are surprisingly inconsistent in the way they declare icons (via `<link>` elements in the page’s head). Twitter and Pinterest, two relatively modern progressive web apps, provide icons in two sizes.
+1. Open your site in Chrome and run the API in the JavaScript console to check which Feature Policy-controlled features are allowed on your site.
 
-<!-- prettier-ignore -->
-```html
-<!-- example -->
-<link rel="icon" href="/icon-32x32.png">
-<link rel="apple-touch-icon" href="/icon-192x192.png">
-```
+2. Read about individual features on [featurepolicy.info](https://featurepolicy.info/) and decide which features should be disabled (`'none'` value), and which features should be disabled only in cross-origin `<iframe>`s (`'self'` value).
 
-## The Paciello Group releases ARC Toolkit
+3. Add the `Feature-Policy` header to your site’s HTTP responses (policies are separated by semicolons).
 
-[The Paciello Group](https://mobile.twitter.com/paciellogroup/status/1129013674675449864): ARC Toolkit, our professional-level accessibility testing tool, is now available as a Chrome DevTools extension. This tool detects issues related to the [WCAG 2.1 guidelines](https://w3c.github.io/wcag/21/guidelines/). You can run the test on the entire page or just the node selected in the DevTools Elements panel.
+   ```http
+   Feature-Policy: geolocation 'self';sync-xhr 'none'
+   ```
 
-<video controls src="/media/arc-toolkit-demo.mp4"></video>
+4. Repeat step 1 to confirm that your new feature policy is in effect. You can also scan your site on [securityheaders.com](https://securityheaders.com/).
 
-**Note:** Automated accessibility tools are only able to find _some_ accessibility issues, and manual testing is necessary to ensure full accessibility. Lighthouse (Audits panel) suggests manual checks after performing an accessibility audit.
-
-![](/media/lighthouse-manual-audits.png)
+   ![](/media/security-headers-feature-policy.png)
 
 ## Other news
 
-- [Jeff Jaffe](https://www.w3.org/blog/2019/05/w3c-and-whatwg-to-work-together-to-advance-the-open-web-platform/): W3C and WHATWG have reached an agreement to collaborate on the development of HTML. “W3C shall encourage the community … to contribute directly to the **WHATWG HTML and DOM repositories**; raising issues, proposing solutions, commenting on proposed solutions, and indicating support or otherwise for proposals.“
+- [Dave Camp](https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/): Firefox now blocks **cookies from known trackers** by default (when the cookie is used in a third-party context). This change is currently in effect only for new Firefox users; existing users will be automatically updated to the new policy “in the coming months.”
 
-- [Paul Calvano](https://discuss.httparchive.org/t/analyzing-resource-age-by-content-type/1659): “There is a significant gap in the first- vs. third-party resource age of CSS and web fonts. 95% of first-party fonts are older than one week compared to 50% of third-party fonts … This makes a strong case for **self-hosting web fonts**!”
+- [Pete LePage](https://developers.google.com/web/updates/2019/06/nic75): Chrome for Android now allows websites to **share images** (and other file types) via the `navigator.share` method. (Ed. note: See [issue 1014](https://webplatform.news/issues/2019-05-10) for more information about the Web Share API).
 
-- [Rachel Andrew](https://www.smashingmagazine.com/2019/05/display-grid-subgrid/): The **CSS `subgrid` value** is a relatively straightforward addition to grid layout. For example, if you have nested grids, and you apply `grid-template-rows: subgrid` to the child grid, then this grid will use the row tracks of the parent grid instead of creating its own row tracks. That’s all there is to it. (This feature is currently only supported in Firefox Nightly.)
+- [Valerie Young](https://bocoup.com/blog/widening-the-web-with-ecma-402): The ECMAScript **Internationalization APIs** for date and time formatting (`Intl.DateTimeFormat` constructor), and number formatting (`Intl.NumberFormat` constructor) are widely supported in browsers.
 
-* [GitHub Blog](https://github.blog/2019-05-23-introducing-new-ways-to-keep-your-code-secure/): GitHub can now generate automated security fixes for your dependencies with known security vulnerabilities. On GitHub’s website, check your repository’s Security tab for security alerts. If you open an alert and press the **“Create automated security fix” button**, GitHub will create an automated pull request that fixes the security vulnerability.
+- [Alan Jeffrey](https://blog.mozvr.com/pathfinder-a-first-look/): Patrick Walton from Mozilla is working on a vector graphics renderer that can **render text smoothly at all angles** when viewed with an AR (Augmented Reality) headset. We plan to use it in our browsers for AR headsets (Firefox Reality).
 
-* [Rick Viscomi](https://dev.to/rick_viscomi/introducing-the-web-almanac-6dl): HTTP Archive plans to release the first annual **Web Almanac** in November, a report of the state of the web with interesting insights written by different experts. About 50 volunteers from the web community are currently working on it, and they are looking for more contributors.
+- [Pinterest Engineering](https://medium.com/@Pinterest_Engineering/building-the-pinterest-app-for-windows-10-5e29f2146f7d): Our progressive web app is now available as a standalone desktop application on Windows 10. It can be installed via the Microsoft Store, which “treats the **packaged PWA** as a first class citizen with access to Windows 10 feature APIs.”
+
+- [Jonathan Davis](https://webkit.org/blog/8967/release-notes-for-safari-technology-preview-83/): The **CSS `display: flow-root` value** has landed in Safari Technology Preview. (Ed. note: This value is already supported in Chrome and Firefox. See [issue 871](https://webplatform.news/issues/2017-04-05) for a use case.)
