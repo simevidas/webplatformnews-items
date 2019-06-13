@@ -1,9 +1,5 @@
 # Weekly news: CSS Scroll Snap, Opera GX, PWA install icon
 
-`<EDITOR_INTRO>`  
-Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
-`</EDITOR_INTRO>`
-
 ## An install icon is coming to Chrome on desktop
 
 [Pete LePage](https://developers.google.com/web/updates/2019/06/pwa-install-addressbar): The next version of Chrome will automatically show an install icon in the address bar on desktop if the site meets Chrome’s PWA installability criteria. (You can listen for the `appinstalled` event to detect if the user installed your PWA.)
