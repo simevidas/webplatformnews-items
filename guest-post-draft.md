@@ -29,4 +29,4 @@ let text = response.settings?.headerText ?? "Hello, world!";
 
 [Šime Vidas](https://webplatform.news/issues/2019-06-05): CSS Scroll Snap is supported in Chrome, Safari, and the next version of Firefox. Scroll snapping works well on touch screen devices but there are some usability issues on desktop platforms.
 
-<video controls src="/media/css-scroll-snap-demo.mp4">
+<video controls src="/media/css-scroll-snap-demo.mp4"></video>
