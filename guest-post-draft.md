@@ -1,32 +1,37 @@
-# Weekly news: CSS Scroll Snap, Opera GX, PWA install icon
+# Weekly news: Mozilla’s AV1 encoder, Samsung One UI CSS, DOM `matches` method
 
-## An install icon is coming to Chrome on desktop
+`<EDITOR_INTRO>`  
+Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
+`</EDITOR_INTRO>`
 
-[Pete LePage](https://developers.google.com/web/updates/2019/06/pwa-install-addressbar): The next version of Chrome will automatically show an install icon in the address bar on desktop if the site meets Chrome’s PWA installability criteria. (You can listen for the `appinstalled` event to detect if the user installed your PWA.)
+## Vimeo partners with Mozilla to use their rav1e encoder
 
-![](/media/chrome-pwa-install-icon.png)
+[Vittorio Giovara](https://medium.com/vimeo-engineering-blog/behind-the-scenes-of-av1-at-vimeo-a2115973314b): AV1 is a royalty-free video codec designed by the Alliance for Open Media and the the most anticipated successor of H.264. Vimeo is contributing to the development of Mozilla’s AV1 encoder.
 
-## Opera GX is available on Windows
+> In order for AV1 to succeed, there is a need of an encoder like x264, a free and open-source encoder, written by the community, for the community, and available to everyone: rav1e. Vimeo believes in what Mozilla is doing.
 
-[Maciej Kocemba](https://blogs.opera.com/desktop/2019/06/opera-gx-early-access-lvl1/): The preview version of Opera GX for Windows is now available. This is a special version of Opera that lets users limit how much CPU and RAM is available to the browser.
+## Use the `aria-describedby` attribute to bind instructions to form fields
 
-![](/media/opera-gx-cpu-ram-limiter.png)
+[Raghavendra Satish Peri](https://www.deque.com/blog/anatomy-of-accessible-forms-best-practices/): If you provide additional instructions for a form field, use the `aria-describedby` attribute to bind the instruction to the field. Otherwise, assistive technology users who use the Tab key might miss this information.
 
-## Updated ECMAScript proposals
-
-[Azu](https://ecmascript-daily.github.io/ecmascript/2019/06/09/ecmascript-proposal-updates): The JavaScript optional chaining operator (`obj?.prop`) and nullish coalescing operator (`x ?? y`) proposals have been moved to Stage 2 of the TC39 process. (Ed. note: See [Web Platform News issue 902](https://webplatform.news/issues/2017-05-26) for more information about the TC39 process.)
-
-```js
-// BEFORE
-let text = response.settings && response.settings.headerText;
-if (text == null) text = "Hello, world!";
-
-// AFTER
-let text = response.settings?.headerText ?? "Hello, world!";
+```html
+<label for="dob">Date of Birth</label>
+<input type="text" aria-describedby="dob1" id="dob" />
+<span id="dob1">Use DD/MM/YY</span>
 ```
 
-## CSS Scroll Snap is coming to Firefox
+## Samsung Internet announces One UI CSS
 
-[Šime Vidas](https://webplatform.news/issues/2019-06-05): CSS Scroll Snap is supported in Chrome, Safari, and the next version of Firefox. Scroll snapping works well on touch screen devices but there are some usability issues on desktop platforms.
+[Diego González](https://medium.com/samsung-internet-dev/one-ui-to-rule-them-all-f2b26e283b48): Samsung is experimentally developing a CSS library based on its new One UI design language. The library is called One UI CSS and includes styles for common form controls such as buttons, menus, and sliders, as well as other assets (web fonts, SVG icons, polyfills).
 
-<video controls src="/media/css-scroll-snap-demo.mp4"></video>
+![Some of the controls present in One UI CSS](/media/one-ui-css.png)
+
+## DOM elements have a `matches` method
+
+[Sam Thorogood](https://dev.to/samthor/matching-elements-with-selectors-in-js-4991): You can use the `matches` method to test if a DOM element has a specific CSS class, attribute or ID value. This method accepts a CSS selector and returns `true` if the element matches the given selector.
+
+```js
+el.classList.has('foo')  /* becomes */ el.matches('.foo');
+el.hasAttribute('hello') /* becomes */ el.matches('[hello]');
+el.id === 'bar'          /* becomes */ el.matches('#bar');
+```
