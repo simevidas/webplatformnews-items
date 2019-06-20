@@ -10,7 +10,7 @@
 
 > In order for AV1 to succeed, there is a need of an encoder like x264, a free and open-source encoder, written by the community, for the community, and available to everyone: rav1e. Vimeo believes in what Mozilla is doing.
 
-## Use the `aria-describedby` attribute to bind instructions to form fields
+## Use `aria-describedby` to bind instructions to form fields
 
 [Raghavendra Satish Peri](https://www.deque.com/blog/anatomy-of-accessible-forms-best-practices/): If you provide additional instructions for a form field, use the `aria-describedby` attribute to bind the instruction to the field. Otherwise, assistive technology users who use the Tab key might miss this information.
 
