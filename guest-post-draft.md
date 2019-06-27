@@ -1,37 +1,29 @@
-# Weekly news: Mozilla’s AV1 encoder, Samsung One UI CSS, DOM `matches` method
+# Weekly news: Event Timing, Google Earth for Web, undead session cookies
 
 `<EDITOR_INTRO>`  
 Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
 `</EDITOR_INTRO>`
 
-## Vimeo partners with Mozilla to use their rav1e encoder
+## Tracking down slow event handlers with Event Timing
 
-[Vittorio Giovara](https://medium.com/vimeo-engineering-blog/behind-the-scenes-of-av1-at-vimeo-a2115973314b): AV1 is a royalty-free video codec designed by the Alliance for Open Media and the the most anticipated successor of H.264. Vimeo is contributing to the development of Mozilla’s AV1 encoder.
+[Gilles Dubuc](https://phabricator.wikimedia.org/phame/live/7/post/168/tracking_down_slow_event_handlers_with_event_timing/): Event Timing is experimentally available in Chrome (as an Origin Trial), and Wikipedia is taking part in the trial. This API can be used to accurately determine the duration of event handlers with the goal of surfacing slow events.
 
-> In order for AV1 to succeed, there is a need of an encoder like x264, a free and open-source encoder, written by the community, for the community, and available to everyone: rav1e. Vimeo believes in what Mozilla is doing.
+> We quickly identified 3 very frequent slow click handlers experienced frequently by real users on Wikipedia. … Two of those issues are caused by expensive JavaScript calls causing style recalculation and layout.
 
-## Use `aria-describedby` to bind instructions to form fields
+## Google Earth for Web beta available
 
-[Raghavendra Satish Peri](https://www.deque.com/blog/anatomy-of-accessible-forms-best-practices/): If you provide additional instructions for a form field, use the `aria-describedby` attribute to bind the instruction to the field. Otherwise, assistive technology users who use the Tab key might miss this information.
+[Jordon Mears](https://web.dev/earth-webassembly)‎: The preview version of Google Earth for Web powered by WebAssembly is now available. You can try it out ([direct link](https://earth.google.com/web/?beta=1)) in Chromium-based browsers and Firefox — it runs single-threaded in browsers that don’t have yet (re-)enabled SharedArrayBuffer — but not in Safari because of its lack of full support for WebGL2.
 
-```html
-<label for="dob">Date of Birth</label>
-<input type="text" aria-describedby="dob1" id="dob" />
-<span id="dob1">Use DD/MM/YY</span>
-```
+![](/media/google-earth-web.png)
 
-## Samsung Internet announces One UI CSS
+## Browsers can keep session cookies alive
 
-[Diego González](https://medium.com/samsung-internet-dev/one-ui-to-rule-them-all-f2b26e283b48): Samsung is experimentally developing a CSS library based on its new One UI design language. The library is called One UI CSS and includes styles for common form controls such as buttons, menus, and sliders, as well as other assets (web fonts, SVG icons, polyfills).
+[Eric Lawrence](https://textslashplain.com/2019/06/24/surprise-undead-session-cookies/): Chrome and Firefox allow users to restore the previous browser session on startup. With this option enabled, closing the browser will not delete the user’s session cookies nor empty the `sessionStorage` of web pages.
 
-![Some of the controls present in One UI CSS](/media/one-ui-css.png)
+> Given this session resumption behavior, it’s more important than ever to ensure that your site behaves reasonably upon receipt of an outdated session cookie (e.g., redirect the user to the login page instead of showing an error).
 
-## DOM elements have a `matches` method
+## SVG geometry properties in CSS
 
-[Sam Thorogood](https://dev.to/samthor/matching-elements-with-selectors-in-js-4991): You can use the `matches` method to test if a DOM element has a specific CSS class, attribute or ID value. This method accepts a CSS selector and returns `true` if the element matches the given selector.
+[Jérémie Patonnier](https://mobile.twitter.com/JeremiePat/status/1143095982651072512): Firefox Nightly has implemented SVG’s geometry properties (`x`, `y`, `r`, etc.) in CSS. This feature is already supported in Chrome and Safari, and is expected to ship in Firefox 69 (in September).
 
-```js
-el.classList.has('foo')  /* becomes */ el.matches('.foo');
-el.hasAttribute('hello') /* becomes */ el.matches('[hello]');
-el.id === 'bar'          /* becomes */ el.matches('#bar');
-```
+https://codepen.io/simevidas/pen/WqEXdw?editors=1100
