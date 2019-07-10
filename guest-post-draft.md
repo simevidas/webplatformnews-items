@@ -1,29 +1,54 @@
-# Weekly news: Event Timing, Google Earth for Web, undead session cookies
+# Weekly news: HTML inspection in Search Console, global scope of scripts, Babel `env` adds `defaults` query
 
-`<EDITOR_INTRO>`  
-Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
-`</EDITOR_INTRO>`
+## Easier HTML inspection in Google Search Console
 
-## Tracking down slow event handlers with Event Timing
+[Barry Schwartz](https://searchengineland.com/google-search-console-adds-search-within-markup-copy-with-tweaking-318676): The URL Inspection tool in Google Search Console now includes useful controls for searching within and copying the HTML code of the crawled page.
 
-[Gilles Dubuc](https://phabricator.wikimedia.org/phame/live/7/post/168/tracking_down_slow_event_handlers_with_event_timing/): Event Timing is experimentally available in Chrome (as an Origin Trial), and Wikipedia is taking part in the trial. This API can be used to accurately determine the duration of event handlers with the goal of surfacing slow events.
+![](/media/google-search-console-html.png)
 
-> We quickly identified 3 very frequent slow click handlers experienced frequently by real users on Wikipedia. … Two of those issues are caused by expensive JavaScript calls causing style recalculation and layout.
+**Note:** The URL Inspection tool provides information about Google’s indexed version of a specific page. You can access Google Search Console at https://search.google.com/search-console.
 
-## Google Earth for Web beta available
+## CSS properties are computed once per element
 
-[Jordon Mears](https://web.dev/earth-webassembly)‎: The preview version of Google Earth for Web powered by WebAssembly is now available. You can try it out ([direct link](https://earth.google.com/web/?beta=1)) in Chromium-based browsers and Firefox — it runs single-threaded in browsers that don’t have yet (re-)enabled SharedArrayBuffer — but not in Safari because of its lack of full support for WebGL2.
+[Miriam Suzanne](https://www.smashingmagazine.com/2019/07/css-custom-properties-cascade/#inherited-versus-universal): The value of a CSS custom property is computed once per element. If you define on the `<html>` element a custom property `--func` that uses the value of another custom property `--val`, then re-defining the value of `--val` on a nested DOM element that uses `--func` won’t have any effect because the inherited value of `--func` is already computed.
 
-![](/media/google-earth-web.png)
+```css
+html {
+  --angle: 90deg;
+  --gradient: linear-gradient(var(--angle), blue, red);
+}
 
-## Browsers can keep session cookies alive
+header {
+  --angle: 270deg; /* ignored */
+  background-image: var(--gradient); /* inherited value */
+}
+```
 
-[Eric Lawrence](https://textslashplain.com/2019/06/24/surprise-undead-session-cookies/): Chrome and Firefox allow users to restore the previous browser session on startup. With this option enabled, closing the browser will not delete the user’s session cookies nor empty the `sessionStorage` of web pages.
+## The global scope of scripts
 
-> Given this session resumption behavior, it’s more important than ever to ensure that your site behaves reasonably upon receipt of an outdated session cookie (e.g., redirect the user to the login page instead of showing an error).
+[Surma](https://mobile.twitter.com/DasSurma/status/1145990244069707776): JavaScript variables created via `let`, `const`, or `class` declarations at the top level of a script (`<script>` element) continue to be defined in subsequent scripts of the page. (Ed. note: Axel Rauschmayer calls this the “[global scope of scripts](https://mobile.twitter.com/rauschma/status/1145994986057535488).”)
 
-## SVG geometry properties in CSS
+![](/media/global-scope-of-scripts.png)
 
-[Jérémie Patonnier](https://mobile.twitter.com/JeremiePat/status/1143095982651072512): Firefox Nightly has implemented SVG’s geometry properties (`x`, `y`, `r`, etc.) in CSS. This feature is already supported in Chrome and Safari, and is expected to ship in Firefox 69 (in September).
+## Babel `env` now supports the `defaults` query
 
-https://codepen.io/simevidas/pen/WqEXdw?editors=1100
+[Nicolò Ribaudo](https://babeljs.io/blog/2019/07/03/7.5.0.html): Babel’s `env` preset ([@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)) now allows you to target Browserslist’s default browsers (see the full list at [browsersl.ist](https://browsersl.ist/)). Note that if you don’t specify your target browsers, Babel `env` will run _every_ syntax transform on your code.
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": { "browsers": "defaults" }
+      }
+    ]
+  ]
+}
+```
+
+## All news items from June 2019 [PDF]
+
+For your convenience, I have compiled all 59 news items that I’ve published throughout June into one 10-page PDF document: **[Download it here](/media/web-platform-news-june-2019.pdf)**.
+
+![](/media/web-platform-news-june-2019.png)
