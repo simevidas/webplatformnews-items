@@ -32,7 +32,7 @@ header {
 
 ## Babel `env` now supports the `defaults` query
 
-[Nicolò Ribaudo](https://babeljs.io/blog/2019/07/03/7.5.0.html): Babel’s `env` preset ([@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)) now allows you to target Browserslist’s default browsers (see the full list at [browsersl.ist](https://browsersl.ist/)). Note that if you don’t specify your target browsers, Babel `env` will run _every_ syntax transform on your code.
+[Nicolò Ribaudo](https://babeljs.io/blog/2019/07/03/7.5.0.html): Babel’s `env` preset ([@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)) now allows you to target Browserslist’s default browsers (which are listed at [browsersl.ist](https://browsersl.ist/)). Note that if you don’t specify your target browsers, Babel `env` will run _every_ syntax transform on your code.
 
 ```json
 {
