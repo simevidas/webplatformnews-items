@@ -1,54 +1,56 @@
-# Weekly news: HTML inspection in Search Console, global scope of scripts, Babel `env` adds `defaults` query
+# Weekly news: CSS `::marker` pseudo-element, pre-rendering web components, adding Webmention to your site
 
-## Easier HTML inspection in Google Search Console
+`<EDITOR_INTRO>`  
+Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
+`</EDITOR_INTRO>`
 
-[Barry Schwartz](https://searchengineland.com/google-search-console-adds-search-within-markup-copy-with-tweaking-318676): The URL Inspection tool in Google Search Console now includes useful controls for searching within and copying the HTML code of the crawled page.
+## Using plain text fields for date input
 
-![](/media/google-search-console-html.png)
+[Adrian Roselli](http://adrianroselli.com/2019/07/maybe-you-dont-need-a-date-picker.html): Keyboard users prefer regular text fields over complex date pickers, and voice users are frustrated by the native control (`<input type="date">`).
 
-**Note:** The URL Inspection tool provides information about Google’s indexed version of a specific page. You can access Google Search Console at https://search.google.com/search-console.
+> Previously, I have relied on plain text inputs as date fields with custom validation for the site, typically using the same logic on the client and the server. For known dates — birthdays, holidays, anniversaries, etc. — it has tested well.
 
-## CSS properties are computed once per element
+## Pre-rendering web components
 
-[Miriam Suzanne](https://www.smashingmagazine.com/2019/07/css-custom-properties-cascade/#inherited-versus-universal): The value of a CSS custom property is computed once per element. If you define on the `<html>` element a custom property `--func` that uses the value of another custom property `--val`, then re-defining the value of `--val` on a nested DOM element that uses `--func` won’t have any effect because the inherited value of `--func` is already computed.
+[Max Lynch](https://dev.to/ionic/why-we-use-web-components-2c1i): Stencil is a “web component compiler” that can be used to pre-render web components (incl. Shadow DOM) or hide them until they are fully styled to avoid the flash of unstyled content (FOUC).
 
-```css
-html {
-  --angle: 90deg;
-  --gradient: linear-gradient(var(--angle), blue, red);
-}
+This tool also makes sure that polyfills are only loaded when needed, and its Component API includes useful decorators and hooks that make writing web components easier (e.g., the `Prop` decorator handles changes to attributes).
 
-header {
-  --angle: 270deg; /* ignored */
-  background-image: var(--gradient); /* inherited value */
-}
-```
+```js
+import { Component, Prop, h } from "@stencil/core";
 
-## The global scope of scripts
+@Component({
+  tag: "my-component"
+})
+export class MyComponent {
+  @Prop() age: number = 0;
 
-[Surma](https://mobile.twitter.com/DasSurma/status/1145990244069707776): JavaScript variables created via `let`, `const`, or `class` declarations at the top level of a script (`<script>` element) continue to be defined in subsequent scripts of the page. (Ed. note: Axel Rauschmayer calls this the “[global scope of scripts](https://mobile.twitter.com/rauschma/status/1145994986057535488).”)
-
-![](/media/global-scope-of-scripts.png)
-
-## Babel `env` now supports the `defaults` query
-
-[Nicolò Ribaudo](https://babeljs.io/blog/2019/07/03/7.5.0.html): Babel’s `env` preset ([@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)) now allows you to target Browserslist’s default browsers (which are listed at [browsersl.ist](https://browsersl.ist/)). Note that if you don’t specify your target browsers, Babel `env` will run _every_ syntax transform on your code.
-
-```json
-{
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": { "browsers": "defaults" }
-      }
-    ]
-  ]
+  render() {
+    return <div>I am {this.age} years old</div>;
+  }
 }
 ```
 
-## All news items from June 2019 [PDF]
+## The CSS `::marker` pseudo-element
 
-For your convenience, I have compiled all 59 news items that I’ve published throughout June into one 10-page PDF document: **[Download it here](/media/web-platform-news-june-2019.pdf)**.
+[Rachel Andrew](https://www.smashingmagazine.com/2019/07/css-lists-markers-counters/): When the CSS `display: list-item` declaration is applied to an element, the element generates a marker box containing a marker, e.g., a list bullet (the `<li>` and `<summary>` elements have markers by default).
 
-![](/media/web-platform-news-june-2019.png)
+Markers can be styled via the `::marker` pseudo-element (useful for changing the color or font of the marker), but this CSS feature is currently only supported in Firefox.
+
+![](/media/css-marker-pseudo-element.jpg)
+
+## Adding Webmention to your website
+
+[Daniel Aleksandersen](https://www.ctrl.blog/entry/setup-webmention.html):
+
+1. Sign up on [Webmention.io](https://webmention.io/); this is a service that collects webmentions on your behalf.
+
+2. Add `<link rel="webmention">` (with the appropriate `href` value) to your web pages.
+
+   > There are also Webmention plugins available for all major content management systems (CMS) if you prefer building on top of your CMS.
+
+3. Fetch webmentions from [Webmention.io](https://webmention.io/) (via Ajax) to display them on your page.
+
+4. Use [webmention.app](https://webmention.app/) to automate sending webmentions (when you publish content that includes links to other sites that support Webmention).
+
+   ![](/media/webmention-app.png)
