@@ -2,7 +2,7 @@
 
 ## Truncating mutli-line text
 
-The CSS `-webkit-line-clamp` property for truncating multi-line text is now widely supported (see my [usage guide](/issues/2019-05-17)). If you use **Autoprefixer**, update it to the latest version (9.6.1). Previous versions would remove `-webkit-box-orient: vertical`, which caused this CSS feature to stop working.
+The CSS `-webkit-line-clamp` property for truncating multi-line text is now widely supported (see my [usage guide](https://webplatform.news/issues/2019-05-17)). If you use **Autoprefixer**, update it to the latest version (9.6.1). Previous versions would remove `-webkit-box-orient: vertical`, which caused this CSS feature to stop working.
 
 **Note:** Autoprefixer doesn’t generate any prefixes for you in this case. You need to use the following four declarations exactly (all are required):
 
