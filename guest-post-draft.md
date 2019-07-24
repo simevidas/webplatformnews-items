@@ -1,56 +1,65 @@
-# Weekly news: CSS `::marker` pseudo-element, pre-rendering web components, adding Webmention to your site
+# Weekly news: Truncating muti-line text, `calc()` in custom property values, Contextual Alternates
 
-`<EDITOR_INTRO>`  
-Šime posts regular content for web developers on [webplatform.news](https://webplatform.news).  
-`</EDITOR_INTRO>`
+## Truncating mutli-line text
 
-## Using plain text fields for date input
+The CSS `-webkit-line-clamp` property for truncating multi-line text is now widely supported (see my [usage guide](/issues/2019-05-17)). If you use **Autoprefixer**, update it to the latest version (9.6.1). Previous versions would remove `-webkit-box-orient: vertical`, which caused this CSS feature to stop working.
 
-[Adrian Roselli](http://adrianroselli.com/2019/07/maybe-you-dont-need-a-date-picker.html): Keyboard users prefer regular text fields over complex date pickers, and voice users are frustrated by the native control (`<input type="date">`).
+**Note:** Autoprefixer doesn’t generate any prefixes for you in this case. You need to use the following four declarations exactly (all are required):
 
-> Previously, I have relied on plain text inputs as date fields with custom validation for the site, typically using the same logic on the client and the server. For known dates — birthdays, holidays, anniversaries, etc. — it has tested well.
-
-## Pre-rendering web components
-
-[Max Lynch](https://dev.to/ionic/why-we-use-web-components-2c1i): Stencil is a “web component compiler” that can be used to pre-render web components (incl. Shadow DOM) or hide them until they are fully styled to avoid the flash of unstyled content (FOUC).
-
-This tool also makes sure that polyfills are only loaded when needed, and its Component API includes useful decorators and hooks that make writing web components easier (e.g., the `Prop` decorator handles changes to attributes).
-
-```js
-import { Component, Prop, h } from "@stencil/core";
-
-@Component({
-  tag: "my-component"
-})
-export class MyComponent {
-  @Prop() age: number = 0;
-
-  render() {
-    return <div>I am {this.age} years old</div>;
-  }
+```css
+.line-clamp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* or any other integer */
 }
 ```
 
-## The CSS `::marker` pseudo-element
+**Source:** [Autoprefixer’s post on Twitter](https://mobile.twitter.com/Autoprefixer/status/1147505748261396480)
 
-[Rachel Andrew](https://www.smashingmagazine.com/2019/07/css-lists-markers-counters/): When the CSS `display: list-item` declaration is applied to an element, the element generates a marker box containing a marker, e.g., a list bullet (the `<li>` and `<summary>` elements have markers by default).
+## Calculations in CSS custom property values
 
-Markers can be styled via the `::marker` pseudo-element (useful for changing the color or font of the marker), but this CSS feature is currently only supported in Firefox.
+In CSS it is currently not possible to pre-calculate custom property values. The computed value of a custom property is its specified value (with variables substituted); therefore, relative values in `calc()` expressions are _not_ “absolutized” (e.g., `em` values are not computed to `px` values).
 
-![](/media/css-marker-pseudo-element.jpg)
+![](/media/css-custom-properties.png)
 
-## Adding Webmention to your website
+**Spec:** https://drafts.csswg.org/css-variables/#defining-variables
 
-[Daniel Aleksandersen](https://www.ctrl.blog/entry/setup-webmention.html):
+```css
+:root {
+  --large: calc(1em + 10px);
+}
 
-1. Sign up on [Webmention.io](https://webmention.io/); this is a service that collects webmentions on your behalf.
+blockquote {
+  font-size: var(--large);
+}
+```
 
-2. Add `<link rel="webmention">` (with the appropriate `href` value) to your web pages.
+In the above example, it may appear that the calculation is performed on the root element, specifically that the relative value `1em` is computed and added to the absolute value `10px`. Under default conditions (`1em` = `16px` on the root element), the computed value of `--large` would be `26px`.
 
-   > There are also Webmention plugins available for all major content management systems (CMS) if you prefer building on top of your CMS.
+But that’s not what’s happening here. The computed value of `--large` is its specified value, `calc(1em + 10px)`. This value is inherited and substituted into the value of the `font-size` property on the `<blockquote>` element.
 
-3. Fetch webmentions from [Webmention.io](https://webmention.io/) (via Ajax) to display them on your page.
+```css
+blockquote {
+  /* the declaration after variable substitution */
+  font-size: calc(1em + 10px);
+}
+```
 
-4. Use [webmention.app](https://webmention.app/) to automate sending webmentions (when you publish content that includes links to other sites that support Webmention).
+Finally, the calculation is performed and the relative `1em` value absolutized in the scope of the `<blockquote>` element — _not_ the root element where the `calc()` expression is declared.
 
-   ![](/media/webmention-app.png)
+**Source:** [Tab Atkins Jr.’s reply on Twitter](https://mobile.twitter.com/tabatkins/status/1153515846670512128)
+
+## Contextual Alternates
+
+The “Contextual Alternates” OpenType feature ensures that characters don’t overlap or collide when ligatures are turned off. You can check if your font supports this feature on [wakamaifondue.com](https://wakamaifondue.com/) and enable it (if necessary) via the CSS `font-variant-ligatures: contextual` declaration.
+
+![](/media/contextual-alternates.png)
+
+**Source:** “[Contextual Alternations (for a fraction of the price)](https://rwt.io/typography-tips/contextual-alternations-fraction-price)” by Jason Pamental
+
+## Announcing daily news on webplatform.news
+
+Announcement: I have started posting daily news for web developers on [webplatform.news](https://webplatform.news). Visit every day!
+
+![](/media/web-platform-daily-vs-news.png)
