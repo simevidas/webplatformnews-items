@@ -35,4 +35,4 @@ The Web We Want ([webwewant.fyi](https://webwewant.fyi/)) is a new collaboration
 
 - **XSS Auditor**, a Chrome feature that detects cross-site scripting vulnerabilities, has been deemed ineffective and will be removed from Chrome in a future version. You may still want to set the HTTP `X-Xss-Protection: 1; mode=block` header for legacy browsers — **[source](https://scotthelme.co.uk/security-headers-updates/)**
 
-Read more news in Web Platform News’s new, weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
+Read more news in my new, weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
