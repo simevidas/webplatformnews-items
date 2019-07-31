@@ -1,65 +1,38 @@
-# Weekly news: Truncating muti-line text, `calc()` in custom property values, Contextual Alternates
+# Weekly news: Preventing image loads with `<picture>`, The Web We Want, `<svg>` styles are not scoped
 
-## Truncating mutli-line text
+## Preventing image loads with `<picture>`
 
-The CSS `-webkit-line-clamp` property for truncating multi-line text is now widely supported (see my [usage guide](https://webplatform.news/issues/2019-05-17)). If you use **Autoprefixer**, update it to the latest version (9.6.1). Previous versions would remove `-webkit-box-orient: vertical`, which caused this CSS feature to stop working.
+You can use the `<picture>` element to prevent an image from loading if a specific media query matches the user’s environment (e.g., if the viewport width is larger or smaller than a certain length value). [Try out the demo](https://codepen.io/simevidas/pen/voZENR?editors=1000).
 
-**Note:** Autoprefixer doesn’t generate any prefixes for you in this case. You need to use the following four declarations exactly (all are required):
+```html
+<picture>
+  <!-- show 1⨯1 transparent image if viewport width ≤ 40em -->
+  <source
+    media="(max-width: 40em)"
+    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+  />
 
-```css
-.line-clamp {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; /* or any other integer */
-}
+  <!-- only load image if viewport width > 40em -->
+  <img src="product-large-screen.png" />
+</picture>
 ```
 
-**Source:** [Autoprefixer’s post on Twitter](https://mobile.twitter.com/Autoprefixer/status/1147505748261396480)
+**Source:** [Scott Jehl’s post on Twitter](https://mobile.twitter.com/scottjehl/status/1154424344388558848)
 
-## Calculations in CSS custom property values
+## The Web We Want
 
-In CSS it is currently not possible to pre-calculate custom property values. The computed value of a custom property is its specified value (with variables substituted); therefore, relative values in `calc()` expressions are _not_ “absolutized” (e.g., `em` values are not computed to `px` values).
+The Web We Want ([webwewant.fyi](https://webwewant.fyi/)) is a new collaboration between browser vendors that aims to collect feedback from web developers about the current state of the web. You can submit a feature request on the website (“What do you want?”) and get a chance to present it at an event (An Event Apart, Smashing Conference, etc.).
 
-![](/media/css-custom-properties.png)
+![](/media/web-we-want.png)
 
-**Spec:** https://drafts.csswg.org/css-variables/#defining-variables
+**Source:** [Aaron Gustafson’s announcement on WICG](https://discourse.wicg.io/t/share-your-biggest-challenges-with-the-broader-community/3750?u=simevidas)
 
-```css
-:root {
-  --large: calc(1em + 10px);
-}
+## In other news
 
-blockquote {
-  font-size: var(--large);
-}
-```
+- Firefox supports a non-standard Boolean parameter for the **`location.reload` method** that can be used to hard-reload the page (bypassing the browser’s HTTP cache) — **[source](https://mobile.twitter.com/wilsonpage/status/1149634930168590336)**
 
-In the above example, it may appear that the calculation is performed on the root element, specifically that the relative value `1em` is computed and added to the absolute value `10px`. Under default conditions (`1em` = `16px` on the root element), the computed value of `--large` would be `26px`.
+- If you use inline `<svg>` elements that itself have inline CSS code (in `<style>` elements), be aware that those **styles are not scoped** to the SVG element but global, so they affect other SVG elements as well — **[source](https://mobile.twitter.com/SaraSoueidan/status/1153947911526453249)**
 
-But that’s not what’s happening here. The computed value of `--large` is its specified value, `calc(1em + 10px)`. This value is inherited and substituted into the value of the `font-size` property on the `<blockquote>` element.
+- **XSS Auditor**, a Chrome feature that detects cross-site scripting vulnerabilities, has been deemed ineffective and will be removed from Chrome in a future version. You may still want to set the HTTP X-Xss-Protection: 1; mode=block header for legacy browsers — **[source](https://scotthelme.co.uk/security-headers-updates/)**
 
-```css
-blockquote {
-  /* the declaration after variable substitution */
-  font-size: calc(1em + 10px);
-}
-```
-
-Finally, the calculation is performed and the relative `1em` value absolutized in the scope of the `<blockquote>` element — _not_ the root element where the `calc()` expression is declared.
-
-**Source:** [Tab Atkins Jr.’s reply on Twitter](https://mobile.twitter.com/tabatkins/status/1153515846670512128)
-
-## Contextual Alternates
-
-The “Contextual Alternates” OpenType feature ensures that characters don’t overlap or collide when ligatures are turned off. You can check if your font supports this feature on [wakamaifondue.com](https://wakamaifondue.com/) and enable it (if necessary) via the CSS `font-variant-ligatures: contextual` declaration.
-
-![](/media/contextual-alternates.png)
-
-**Source:** “[Contextual Alternations (for a fraction of the price)](https://rwt.io/typography-tips/contextual-alternations-fraction-price)” by Jason Pamental
-
-## Announcing daily news on webplatform.news
-
-Announcement: I have started posting daily news for web developers on [webplatform.news](https://webplatform.news). Visit every day!
-
-![](/media/web-platform-daily-vs-news.png)
+Read more news in Web Platform News’s **weekly Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
