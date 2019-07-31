@@ -33,6 +33,6 @@ The Web We Want ([webwewant.fyi](https://webwewant.fyi/)) is a new collaboration
 
 - If you use inline `<svg>` elements that itself have inline CSS code (in `<style>` elements), be aware that those **styles are not scoped** to the SVG element but global, so they affect other SVG elements as well — **[source](https://mobile.twitter.com/SaraSoueidan/status/1153947911526453249)**
 
-- **XSS Auditor**, a Chrome feature that detects cross-site scripting vulnerabilities, has been deemed ineffective and will be removed from Chrome in a future version. You may still want to set the HTTP X-Xss-Protection: 1; mode=block header for legacy browsers — **[source](https://scotthelme.co.uk/security-headers-updates/)**
+- **XSS Auditor**, a Chrome feature that detects cross-site scripting vulnerabilities, has been deemed ineffective and will be removed from Chrome in a future version. You may still want to set the HTTP `X-Xss-Protection: 1; mode=block` header for legacy browsers — **[source](https://scotthelme.co.uk/security-headers-updates/)**
 
 Read more news in Web Platform News’s **weekly Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
