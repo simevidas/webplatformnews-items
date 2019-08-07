@@ -1,38 +1,38 @@
-# Weekly news: Preventing image loads with `<picture>`, The Web We Want, `<svg>` styles are not scoped
+# Weekly news: CSS `font-style: oblique`, `webhint` browser extension, CSS Modules V1
 
-## Preventing image loads with `<picture>`
+## Use `font-style: oblique` on variable fonts
 
-You can use the `<picture>` element to prevent an image from loading if a specific media query matches the user’s environment (e.g., if the viewport width is larger or smaller than a certain length value). [Try out the demo](https://codepen.io/simevidas/pen/voZENR?editors=1000).
+Some popular variable fonts have a `'wght'` (weight) axis for displaying text at different font weights and a `'slnt'` (slant) axis for displaying slanted text. This enables creating many font styles using a single variable font file (e.g., see the “[Variable Web Typography](https://zeichenschatz.net/demos/vf/variable-web-typo/)” demo page).
 
-```html
-<picture>
-  <!-- show 1⨯1 transparent image if viewport width ≤ 40em -->
-  <source
-    media="(max-width: 40em)"
-    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-  />
+You can use `font-style: oblique` instead of the lower-level `font-variation-settings` property to display slanted text in variable fonts that have a `'slnt'` axis. This approach works in Chrome, Safari, and Firefox.
 
-  <!-- only load image if viewport width > 40em -->
-  <img src="product-large-screen.png" />
-</picture>
+```css
+/* BEFORE */
+h2 {
+  font-variation-settings: "wght" 500, "slnt" 4;
+}
+
+/* AFTER */
+h2 {
+  font-weight: 500;
+  font-style: oblique 4deg;
+}
 ```
 
-**Source:** [Scott Jehl’s post on Twitter](https://mobile.twitter.com/scottjehl/status/1154424344388558848)
+https://codepen.io/simevidas/pen/zgRWzz?editors=0100
 
-## The Web We Want
+## The new `webhint` browser extension
 
-The Web We Want ([webwewant.fyi](https://webwewant.fyi/)) is a new collaboration between browser vendors that aims to collect feedback from web developers about the current state of the web. You can submit a feature request on the website (“What do you want?”) and get a chance to present it at an event (An Event Apart, Smashing Conference, etc.).
+The `webhint` linting tool is now available as a browser devtools extension for Chrome, Edge, and Firefox (read [Microsoft’s announcement](https://medium.com/webhint/announcing-the-webhint-browser-extension-abb22f4cfeb)). Compared to Lighthouse, one distinguishing feature of `webhint` are its cross-browser compatibility hints.
 
-![](/media/web-we-want.png)
+![](/media/webhint-extension.png)
 
-**Source:** [Aaron Gustafson’s announcement on WICG](https://discourse.wicg.io/t/share-your-biggest-challenges-with-the-broader-community/3750?u=simevidas)
+## Other news
 
-## In other news
+- **CSS Modules V1** is a new proposal from Microsoft that would extend the JavaScript modules infrastructure to allow importing a `CSSStyleSheet` object from a CSS file (e.g., `import styles from "styles.css";`) — **[source](https://mobile.twitter.com/tomayac/status/1157427266458193922)**
 
-- Firefox supports a non-standard Boolean parameter for the **`location.reload` method** that can be used to hard-reload the page (bypassing the browser’s HTTP cache) — **[source](https://mobile.twitter.com/wilsonpage/status/1149634930168590336)**
+- Web apps installed in the desktop version of Chrome can be uninstalled on the **_about:apps_ page** (right-click on an app’s icon to reveal the _Remove…_ option) — **[source](https://techdows.com/2019/08/how-to-uninstall-pwas-from-chrome-and-microsoft-edge-browsers.html)**
 
-- If you use inline `<svg>` elements that itself have inline CSS code (in `<style>` elements), be aware that those **styles are not scoped** to the SVG element but global, so they affect other SVG elements as well — **[source](https://mobile.twitter.com/SaraSoueidan/status/1153947911526453249)**
-
-- **XSS Auditor**, a Chrome feature that detects cross-site scripting vulnerabilities, has been deemed ineffective and will be removed from Chrome in a future version. You may still want to set the HTTP `X-Xss-Protection: 1; mode=block` header for legacy browsers — **[source](https://scotthelme.co.uk/security-headers-updates/)**
+- Because of AMP’s unique requirements, larger news sites such as The Guardian should optimally have **two separate codebases** (one for the AMP pages and one for the regular website) — **[source](https://www.theguardian.com/info/2019/jul/29/revisiting-the-rendering-tier-part-2-migrating-amp)**
 
 Read more news in my new, weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
