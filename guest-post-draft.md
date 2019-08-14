@@ -45,7 +45,7 @@ The main accessibility specifications for web developers:
 <td><a href="https://w3c.github.io/wcag/21/guidelines/">WCAG</a> (Web Content Accessibility Guidelines)</td>
 <td>provides guidelines for making web content more accessible (success criteria for WCAG conformance are defined here)</td>
 </tr>
-</tbody></table>                                                            |
+</tbody></table>
 
 **Related:** “[Contributing to the ARIA Authoring Practices Guide](https://bocoup.com/blog/contributing-to-the-aria-authoring-practices-guide)” by Simon Pieters and Valerie Young
 
