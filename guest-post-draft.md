@@ -1,38 +1,74 @@
-# Weekly news: CSS `font-style: oblique`, `webhint` browser extension, CSS Modules V1
+# Weekly news: HTML `loading` attribute, the main ARIA specifications, moving from `<iframe>` to Shadow DOM
 
-## Use `font-style: oblique` on variable fonts
+## Chrome ships the `loading` attribute
 
-Some popular variable fonts have a `'wght'` (weight) axis for displaying text at different font weights and a `'slnt'` (slant) axis for displaying slanted text. This enables creating many font styles using a single variable font file (e.g., see the “[Variable Web Typography](https://zeichenschatz.net/demos/vf/variable-web-typo/)” demo page).
+The HTML `loading` attribute for lazy-loading images and iframes is now supported in Chrome. You can add `loading="lazy"` to <mark>defer the loading of images</mark> and iframes that are _below_ the viewport until the user scrolls near them.
 
-You can use `font-style: oblique` instead of the lower-level `font-variation-settings` property to display slanted text in variable fonts that have a `'slnt'` axis. This approach works in Chrome, Safari, and Firefox.
+Google suggests either treating this feature as a progressive enhancement or using it on top of your existing JavaScript-based lazy-loading solution.
 
-```css
-/* BEFORE */
-h2 {
-  font-variation-settings: "wght" 500, "slnt" 4;
-}
+**Note:** This feature has not yet been added to the HTML Standard (but there is an [open pull request](https://github.com/whatwg/html/pull/3752)), and multiple links to Google’s documentation are listed on its [Chrome Status page](https://www.chromestatus.com/feature/5645767347798016).
 
-/* AFTER */
-h2 {
-  font-weight: 500;
-  font-style: oblique 4deg;
-}
-```
+**Source:** “[Native lazy-loading for the web](https://web.dev/native-lazy-loading)” by Google
 
-https://codepen.io/simevidas/pen/zgRWzz?editors=0100
+## Overview of ARIA specifications
 
-## The new `webhint` browser extension
+The main accessibility specifications for web developers:
 
-The `webhint` linting tool is now available as a browser devtools extension for Chrome, Edge, and Firefox (read [Microsoft’s announcement](https://medium.com/webhint/announcing-the-webhint-browser-extension-abb22f4cfeb)). Compared to Lighthouse, one distinguishing feature of `webhint` are its cross-browser compatibility hints.
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://w3c.github.io/html-aria/">ARIA in HTML</a></td>
+<td>defines which ARIA role, state, and property attributes are allowed on which HTML elements (the implicit ARIA semantics are defined here)</td>
+</tr>
+<tr>
+<td><a href="https://w3c.github.io/using-aria/">Using ARIA</a></td>
+<td>provides practical advice on how to use ARIA in HTML, with an emphasis on dynamic content and advanced UI controls (the “five rules of ARIA use” are defined here)</td>
+</tr>
+<tr>
+<td><a href="https://w3c.github.io/aria/">ARIA</a> (Accessible Rich Internet Applications)</td>
+<td>defines the ARIA roles, states, and properties</td>
+</tr>
+<tr>
+<td><a href="https://w3c.github.io/aria-practices/">ARIA Authoring Practices</a></td>
+<td>provides general guidelines on how to use ARIA to create accessible apps (includes ARIA implementation patterns for common widgets)</td>
+</tr>
+<tr>
+<td><a href="https://w3c.github.io/html-aam/">HTML Accessibility API Mappings</a></td>
+<td>defines how browsers map HTML elements and attributes to the operating system’s accessibility APIs</td>
+</tr>
+<tr>
+<td><a href="https://w3c.github.io/wcag/21/guidelines/">WCAG</a> (Web Content Accessibility Guidelines)</td>
+<td>provides guidelines for making web content more accessible (success criteria for WCAG conformance are defined here)</td>
+</tr>
+</tbody></table>                                                            |
 
-![](/media/webhint-extension.png)
+**Related:** “[Contributing to the ARIA Authoring Practices Guide](https://bocoup.com/blog/contributing-to-the-aria-authoring-practices-guide)” by Simon Pieters and Valerie Young
+
+## Shadow DOM on BBC’s website
+
+The BBC has moved from `<iframe>` to Shadow DOM for the embedded interactive visualizations on its website. This has resulted in significant improvements in load performance (“more than 25% faster”).
+
+The available Shadow DOM polyfills didn’t reliably prevent styles from leaking across the Shadow DOM boundary, so they decided to instead fall back to `<iframe>` in browsers that don’t support Shadow DOM.
+
+> Shadow DOM … can deliver content in a similar way to iframes in terms of encapsulation but without the negative overheads … We want encapsulation of an element whose content will appear seamlessly as part of the page. Shadow DOM gives us that without any need for a custom element.
+
+One major drawback of this new approach is that CSS media queries can no longer be used to conditionally apply styles based on the content’s width (since the content no longer loads in a separate, embedded document).
+
+> With iframes, media queries would give us the width of our content; with Shadow DOM, media queries give us the width of the device itself. This is a huge challenge for us. We now have no way of knowing how big our content is when it’s served.
+
+**Source:** “[Goodbye iframes](https://medium.com/bbc-design-engineering/goodbye-iframes-6c84a651e137)” by Toby Cox
 
 ## Other news
 
-- **CSS Modules V1** is a new proposal from Microsoft that would extend the JavaScript modules infrastructure to allow importing a `CSSStyleSheet` object from a CSS file (e.g., `import styles from "styles.css";`) — **[source](https://mobile.twitter.com/tomayac/status/1157427266458193922)**
+- The next version of Chrome will introduce the **Largest Contentful Paint** performance metric; this new metric is a more accurate replacement for First Meaningful Paint, and it measures when the largest element is rendered in the viewport (usually, the largest image or paragraph of text) — **[source](https://twitter.com/philwalton/status/1159505273033089024)**
 
-- Web apps installed in the desktop version of Chrome can be uninstalled on the **_about:apps_ page** (right-click on an app’s icon to reveal the _Remove…_ option) — **[source](https://techdows.com/2019/08/how-to-uninstall-pwas-from-chrome-and-microsoft-edge-browsers.html)**
+- Microsoft has created a prototype of a new tool for viewing a web page’s **DOM in 3D**; this tool is now experimentally available in the preview version of Edge — **[source](https://twitter.com/EdgeDevTools/status/1158485601798119424)**
 
-- Because of AMP’s unique requirements, larger news sites such as The Guardian should optimally have **two separate codebases** (one for the AMP pages and one for the regular website) — **[source](https://www.theguardian.com/info/2019/jul/29/revisiting-the-rendering-tier-part-2-migrating-amp)**
+- **Tracking prevention** has been enabled by default in the preview versions of Edge; it is set to balanced by default, which “blocks malicious trackers and some third-party trackers” — **[source](https://techdows.com/2019/08/microsoft-enables-tracking-prevention-by-default-in-new-microsoft-edge.html)**
 
 Read more news in my new, weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
