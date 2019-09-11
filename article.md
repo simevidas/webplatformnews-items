@@ -1,35 +1,35 @@
-# Weekly news: “Text Spacing” bookmarklet, top-level `await`, AMP’s new loading indicator
+# Weekly platform news: Apple deploys web components, progressive HTML rendering, self-hosting critical resources
 
-## Check if your content breaks after increasing text spacing
+## Apple deploys web components built using Stencil
 
-Dylan Barrell from Deque has created a bookmarklet that you can use to check if there are any issues with the content or functionality of your website after increasing the line, paragraph, letter, and word spacing, according to the [“Text Spacing” success criterion](https://w3c.github.io/wcag/21/guidelines/#text-spacing) of the Web Content Accessibility Guidelines.
+The new Apple Music web app (beta) uses a JavaScript framework (Ember.js) but also standard web components such as `<apple-music-video-player>` that are built using Stencil, a web component compiler.
 
-<video src="/media/text-spacing-bookmarklet.mp4" controls></video>
+**Note:** Stencil is a build-time tool that generates standard web components with minimal overhead, while providing core features such as templating, state management, and routing, as well as performance features such as code-splitting and lazy-loading.
 
-<small>(via [Dylan Barrell](https://twitter.com/dylanbarrell/status/1163474668822630401))</small>
+> Apple just deployed into production nearly 50 web components powering a major app they have a significant amount of revenue and strategic value riding on. You can’t say that “no one uses web components” or they are “solving problems that don‘t exist or have been solved better in user land” with a straight face anymore.
 
-## Using top-level `await` in JavaScript modules
+<small>(via [Max Lynch](https://dev.to/ionic/apple-just-shipped-web-components-to-production-and-you-probably-missed-it-57pf))</small>
 
-The proposed top-level `await` feature is especially useful in JavaScript modules: If module A uses top-level `await` (e.g., to connect to a database), and module B imports module A — via the `import` declaration — then the body of B will be evaluated after the body of A (i.e., B will correctly wait for A).
+## Instagram makes use of chunked transfer encoding and progressive HTML rendering
 
-> Top-level `await` enables modules to act as big async functions: With top-level `await`, ECMAScript Modules (ESM) can `await` resources, causing other modules who `import` them to wait before they start evaluating their body.
+Instagram’s website uses HTTP chunked transfer encoding to stream the contents of the HTML document to the browser as each part of the page is generated on the server.
 
-<small>(via [Brian Kardell](https://bkardell.com/blog/TopLevelAwaitIn2m.html))</small>
+> We can flush the HTML `<head>` to the browser almost immediately … This allows the browser to start downloading scripts and stylesheets while the server is busy generating the dynamic data in the rest of the page.
 
-## AMP’s new multi-stage loading indicator
+They also use this technique to flush JSON data to the page in `<script>` elements. The client script waits for this data (using `Promise`) instead of requesting it via XHR.
 
-AMP has created a new multi-stage loading indicator that has better perceived performance (tested on 2,500 users): It shows nothing until 0.5 s, then an intermediate animation until 3.5 s, and finally a looping spinner after that.
+<small>(via [Glenn Conner](https://instagram-engineering.com/making-instagram-com-faster-part-2-f350c8fba0d4))</small>
 
-![](/media/amp-loading-indicator.png)
+## Consider self-hosting your critical resources
 
-<small>(via [Andrew Watterson](https://blog.amp.dev/2019/08/26/making-your-wait-a-little-more-great-new-loading-indicators-in-amp/))</small>
+One section of University of Notre Dame’s website used to load jQuery from Google’s CDN, which could result in very long loading times (100+ seconds) when visiting the site from China. They’ve resolved the issue by self-hosting jQuery instead.
 
-## In other news…
+![](/media/google-cdn-china.png)
 
-- AMP has released the `<amp-script>` element which, for the first time, allows AMP pages to add custom JavaScript, with some constraints: The code runs in a separate worker thread and requires a user gesture to change page content (via [AMP Project](https://twitter.com/AMPhtml/status/1164245170868641794)).
+<small>(via [Erik Runyon](https://erikrunyon.com/2019/09/render-blocking-resource/))</small>
 
-- The HTML Standard has made `autofocus` a global attribute that “applies to all elements, not just to form controls” (e.g., this change enables `<div contenteditable autofocus>`, but no browser supports this yet) (via [Kent Tamura](https://github.com/whatwg/html/commit/f5ae47e538b6d21aa3ea6c70ab6966f4d40c4620)).
+---
 
-- Facebook’s in-app browser (powered by Android's WebView) is not a browser: “Facebook is breaking the web for 20–30% of your traffic because you aren't demanding they do better” (via [Alex Russell](https://twitter.com/slightlylate/status/1167521819789627392)).
+![](/media/sunday-issue-8.png)
 
-Read more news in my new, weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
+Read even more news in my weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
