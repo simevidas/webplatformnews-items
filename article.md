@@ -1,35 +1,35 @@
-# Weekly platform news: Apple deploys web components, progressive HTML rendering, self-hosting critical resources
+# Weekly platform news: Emoji string length, issues with rounded buttons, Bundled Exchanges
 
-## Apple deploys web components built using Stencil
+## The JavaScript string length of emoji characters
 
-The new Apple Music web app (beta) uses a JavaScript framework (Ember.js) but also standard web components such as `<apple-music-video-player>` that are built using Stencil, a web component compiler.
+A single rendered emoji can have a JavaScript string length of up to `7` if it contains additional _Unicode scalar values_ that represent a skin tone modifier, gender specification, and multicolor rendering.
 
-**Note:** Stencil is a build-time tool that generates standard web components with minimal overhead, while providing core features such as templating, state management, and routing, as well as performance features such as code-splitting and lazy-loading.
+![](/media/emoji-string-length.png)
 
-> Apple just deployed into production nearly 50 web components powering a major app they have a significant amount of revenue and strategic value riding on. You can’t say that “no one uses web components” or they are “solving problems that don‘t exist or have been solved better in user land” with a straight face anymore.
+<small>(via [Henri Sivonen](https://hsivonen.fi/string-length/))</small>
 
-<small>(via [Max Lynch](https://dev.to/ionic/apple-just-shipped-web-components-to-production-and-you-probably-missed-it-57pf))</small>
+## An accessibility issue with rounded buttons
 
-## Instagram makes use of chunked transfer encoding and progressive HTML rendering
+Be aware that applying CSS `border-radius` to a `<button>` element reduces the button’s interactive area (“those lost corner pixels are no longer clickable”).
 
-Instagram’s website uses HTTP chunked transfer encoding to stream the contents of the HTML document to the browser as each part of the page is generated on the server.
+![](/media/button-rounded-corners.png)
 
-> We can flush the HTML `<head>` to the browser almost immediately … This allows the browser to start downloading scripts and stylesheets while the server is busy generating the dynamic data in the rest of the page.
+You can avoid this accessibility issue in CSS, e.g., by emulating rounded corners via `border-image` instead, or by overlaying the button with an absolutely positioned, transparent `::before` element.
 
-They also use this technique to flush JSON data to the page in `<script>` elements. The client script waits for this data (using `Promise`) instead of requesting it via XHR.
+<small>(via [Tyler Sticka](https://twitter.com/tylersticka/status/1168917812288675842))</small>
 
-<small>(via [Glenn Conner](https://instagram-engineering.com/making-instagram-com-faster-part-2-f350c8fba0d4))</small>
+## Sharing web pages while offline with Bundled Exchanges
 
-## Consider self-hosting your critical resources
+Chrome plans to add support for navigation to Bundled Exchanges (part of Web Packaging). A _bundled exchange_ is a collection of HTTP request/response pairs, and it can be used to bundle a web page and all of its resources.
 
-One section of University of Notre Dame’s website used to load jQuery from Google’s CDN, which could result in very long loading times (100+ seconds) when visiting the site from China. They’ve resolved the issue by self-hosting jQuery instead.
+> The browser should be able to parse and verify the bundle’s signature and then navigate to the website represented by the bundle without actually connecting to the site as all the necessary subresources could be served by the bundle.
 
-![](/media/google-cdn-china.png)
+Kinuko Yasuda from Google has posted a video that demonstrates how Bundled Exchanges enable sharing web pages (e.g., a web game) with other devices while offline.
 
-<small>(via [Erik Runyon](https://erikrunyon.com/2019/09/render-blocking-resource/))</small>
+<small>(via [Kinuko Yasuda](https://twitter.com/kinu/status/1171332094347268096))</small>
 
 ---
 
-![](/media/sunday-issue-8.png)
+![](/media/sunday-issue-9.png)
 
-Read even more news in my weekly **Sunday issue**. Visit [webplatform.news](https://webplatform.news) for more information.
+Read even more news in my weekly **Sunday issue**, which can be delivered to you via email every Monday morning. Visit [webplatform.news](https://webplatform.news) for more information.
