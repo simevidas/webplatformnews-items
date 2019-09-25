@@ -16,7 +16,7 @@ You can now use WebPageTest to capture any layout shifts that occur on your webs
    });
    ```
 
-1. After completing the test, inspect the recorded `LayoutShifts` metric on the _Custom Metrics_ page, which is linked from the _Details_ section.
+1. After completing the test, inspect the captured `LayoutShifts` entries on the _Custom Metrics_ page, which is linked from the _Details_ section.
 
    ![](/media/webpagetest-custom-metrics.jpg)
 
