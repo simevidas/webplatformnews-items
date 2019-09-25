@@ -1,35 +1,57 @@
-# Weekly platform news: Emoji string length, issues with rounded buttons, Bundled Exchanges
+# Weekly platform news: Checking your site for layout shifts, high-bitrate videos are more likely to stall, Firefox’s command for capturing screenshots
 
-## The JavaScript string length of emoji characters
+## Identifying the causes of layout shifts during page load
 
-A single rendered emoji can have a JavaScript string length of up to `7` if it contains additional _Unicode scalar values_ that represent a skin tone modifier, gender specification, and multicolor rendering.
+You can now use WebPageTest to capture any layout shifts that occur on your website during page load, and identify what caused them.
 
-![](/media/emoji-string-length.png)
+1. On [webpagetest.org](https://www.webpagetest.org/), paste the following snippet into the “Custom Metrics” field in the _Custom_ tab (under _Advanced Settings_) and make sure that a Chrome browser is selected.
 
-<small>(via [Henri Sivonen](https://hsivonen.fi/string-length/))</small>
+   <!-- prettier-ignore -->
+   ```javascript
+   [LayoutShifts]
+   return new Promise(resolve => {
+     new PerformanceObserver(list => {
+       resolve(JSON.stringify(list.getEntries().filter(entry => !entry.hadRecentInput)));
+     }).observe({type: "layout-shift", buffered: true});
+   });
+   ```
 
-## An accessibility issue with rounded buttons
+1. After completing the test, inspect the recorded `LayoutShifts` metric on the _Custom Metrics_ page, which is linked from the _Details_ section.
 
-Be aware that applying CSS `border-radius` to a `<button>` element reduces the button’s interactive area (“those lost corner pixels are no longer clickable”).
+   ![](/media/webpagetest-custom-metrics.jpg)
 
-![](/media/button-rounded-corners.png)
+1. Based on the `"startTime"` and `"value"` numbers in the data, use WebPageTest’s filmstrip view to pinpoint the individual layout shifts and identify their causes.
 
-You can avoid this accessibility issue in CSS, e.g., by emulating rounded corners via `border-image` instead, or by overlaying the button with an absolutely positioned, transparent `::before` element.
+<small>(via [Rick Viscomi](https://dev.to/chromiumdev/fixing-layout-instability-176c))</small>
 
-<small>(via [Tyler Sticka](https://twitter.com/tylersticka/status/1168917812288675842))</small>
+## A high bitrate can cause your videos to stall
 
-## Sharing web pages while offline with Bundled Exchanges
+If you serve videos for your website from your own web server, keep an eye on the video bitrate (the author suggests FFmpeg and [streamclarity.com](https://twitter.com/dougsillars/status/1175818330596360194)). If your video has a bitrate of over 1.5 Mbps, playback may stall one or more times for people on 3G connections, depending on the video’s length.
 
-Chrome plans to add support for navigation to Bundled Exchanges (part of Web Packaging). A _bundled exchange_ is a collection of HTTP request/response pairs, and it can be used to bundle a web page and all of its resources.
+> 50% of videos in this study have a bitrate that is greater than the downlink speed of a 3G connection — meaning that video playback will be delayed and contain stalls.
 
-> The browser should be able to parse and verify the bundle’s signature and then navigate to the website represented by the bundle without actually connecting to the site as all the necessary subresources could be served by the bundle.
+![](/media/video-stall-data.png)
 
-Kinuko Yasuda from Google has posted a video that demonstrates how Bundled Exchanges enable sharing web pages (e.g., a web game) with other devices while offline.
+<small>(via [Doug Sillars](https://twitter.com/dougsillars/status/1173571080155516928))</small>
 
-<small>(via [Kinuko Yasuda](https://twitter.com/kinu/status/1171332094347268096))</small>
+## Firefox’s `:screenshot` command
+
+Firefox’s DevTools console includes a powerful command for capturing screenshots of the current web page. Like in Chrome DevTools, you can capture a screenshot of an individual element, the current viewport, or the full page, but Firefox’s `:screenshot` command also provides advanced options for adjusting the device pixel ratio and setting a delay.
+
+```
+// capture a full-page screenshot at a device pixel ratio of 2
+:screenshot --fullpage --dpr 2
+
+// capture a screenshot of the viewport with a 5-second delay
+:screenshot --delay 5
+```
+
+<small>(via [Reddit](https://www.reddit.com/r/firefox/comments/d7zelb/til_how_to_take_a_high_dpi_website_screenshot_in/))</small>
 
 ---
 
-![](/media/sunday-issue-9.png)
+Read even more news in my weekly **Sunday issue**, which can be delivered to you via email every Monday morning.
 
-Read even more news in my weekly **Sunday issue**, which can be delivered to you via email every Monday morning. Visit [webplatform.news](https://webplatform.news) for more information.
+![](/media/sunday-issue-10.png)
+
+[Web Platform News: Sunday issue →](https://webplatform.news/issues/2019-08-30)
