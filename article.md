@@ -1,57 +1,45 @@
-# Weekly platform news: Checking your site for layout shifts, high-bitrate videos are more likely to stall, Firefox’s command for capturing screenshots
+# Weekly platform news: tracking via web storage, First Input Delay, navigating headings
 
-## Identifying the causes of layout shifts during page load
+## Safari’s tracking prevention limits web storage
 
-You can now use WebPageTest to capture any layout shifts that occur on your website during page load, and identify what caused them.
+Some social networks and other websites that engage in cross-site tracking add a query string or fragment to external links for tracking purposes (Apple calls this “abuse of link decoration”).
 
-1. On [webpagetest.org](https://www.webpagetest.org/), paste the following snippet into the “Custom Metrics” field in the _Custom_ tab (under _Advanced Settings_) and make sure that a Chrome browser is selected.
+When people navigate from websites with tracking abilities to other websites via such “decorated” links, Safari will expire the cookies that are created on the loaded web pages after 24 hours. This has led some trackers to start using other types of storage (e.g., `localStorage`) to track people on websites.
 
-   <!-- prettier-ignore -->
-   ```javascript
-   [LayoutShifts]
-   return new Promise(resolve => {
-     new PerformanceObserver(list => {
-       resolve(JSON.stringify(list.getEntries().filter(entry => !entry.hadRecentInput)));
-     }).observe({type: "layout-shift", buffered: true});
-   });
-   ```
+As a new countermeasure, Safari will now delete _all non-cookie website data_ in these scenarios if the user hasn’t interacted with the website for seven days.
 
-1. After completing the test, inspect the captured `LayoutShifts` entries on the _Custom Metrics_ page, which is linked from the _Details_ section.
+> The reason why we cap the lifetime of script-writable storage is simple. Site owners have been convinced to deploy third-party scripts on their websites for years. Now those scripts are being repurposed to circumvent browsers’ protections against third-party tracking. By limiting the ability to use any script-writeable storage for cross-site tracking purposes, [Safari’s tracking prevention] makes sure that third-party scripts cannot leverage the storage powers they have gained over all these websites.
 
-   ![](/media/webpagetest-custom-metrics.jpg)
+<small>(via [John Wilander](https://webkit.org/blog/9521/intelligent-tracking-prevention-2-3/))</small>
 
-1. Based on the `"startTime"` and `"value"` numbers in the data, use WebPageTest’s filmstrip view to pinpoint the individual layout shifts and identify their causes.
+## First Input Delay is much worse on mobile
 
-<small>(via [Rick Viscomi](https://dev.to/chromiumdev/fixing-layout-instability-176c))</small>
+First Input Delay (FID), the [delay until the page is able to respond to the user](https://youtu.be/ymxs8OSXiUA?t=167), is much worse on mobile: Only 13% of websites have a fast FID on mobile, compared to 70% on desktop.
 
-## A high bitrate can cause your videos to stall
+![](/media/fid-desktop-mobile.jpg)
 
-If you serve videos for your website from your own web server, keep an eye on the video bitrate (the author suggests FFmpeg and [streamclarity.com](https://twitter.com/dougsillars/status/1175818330596360194)). If your video has a bitrate of over 1.5 Mbps, playback may stall one or more times for people on 3G connections, depending on the video’s length.
+Tip: If your website is popular enough to be included in the Chrome UX Report, you can check your site’s mobile vs. desktop FID data on [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/).
 
-> 50% of videos in this study have a bitrate that is greater than the downlink speed of a 3G connection — meaning that video playback will be delayed and contain stalls.
+<small>(via [Rick Viscomi](https://twitter.com/rick_viscomi/status/1176731125991038978))</small>
 
-![](/media/video-stall-data.png)
+## Screen reader users navigate web pages by headings
 
-<small>(via [Doug Sillars](https://twitter.com/dougsillars/status/1173571080155516928))</small>
+According to WebAIM’s recent screen reader user survey, the most popular screen readers are NVDA (41%) and JAWS (40%) on desktop, and VoiceOver (71%) and TalkBack (33%) on mobile.
 
-## Firefox’s `:screenshot` command
+When trying to find information on a web page, most screen reader users navigate the page through the headings (`<h1>`, `<h2>`, `<h3>`, etc.).
 
-Firefox’s DevTools console includes a powerful command for capturing screenshots of the current web page. Like in Chrome DevTools, you can capture a screenshot of an individual element, the current viewport, or the full page, but Firefox’s `:screenshot` command also provides advanced options for adjusting the device pixel ratio and setting a delay.
+> The usefulness of proper heading structures is very high, with 86.1% of respondents finding heading levels very or somewhat useful.
 
-```
-// capture a full-page screenshot at a device pixel ratio of 2
-:screenshot --fullpage --dpr 2
+Tip: You can check a web page’s heading structure with W3C’s [Nu Html Checker](https://validator.w3.org/nu/) (enable the “outline” option).
 
-// capture a screenshot of the viewport with a 5-second delay
-:screenshot --delay 5
-```
+![](/media/heading-level-outline.png)
 
-<small>(via [Reddit](https://www.reddit.com/r/firefox/comments/d7zelb/til_how_to_take_a_high_dpi_website_screenshot_in/))</small>
+<small>(via [WebAIM](https://twitter.com/webaim/status/1178383652658397184))</small>
 
----
+## More news…
 
-Read even more news in my weekly **Sunday issue**, which can be delivered to you via email every Monday morning.
+![](/media/sunday-issue-11.png)
 
-![](/media/sunday-issue-10.png)
+Read even more news in my weekly **Sunday issue** that can be delivered to you via email every Monday morning.
 
 [Web Platform News: Sunday issue →](https://webplatform.news/issues/2019-08-30)
