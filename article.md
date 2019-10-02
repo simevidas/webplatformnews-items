@@ -42,4 +42,4 @@ Tip: You can check a web page’s heading structure with W3C’s [Nu Html Checke
 
 Read even more news in my weekly **Sunday issue** that can be delivered to you via email every Monday morning.
 
-[Web Platform News: Sunday issue →](https://webplatform.news/issues/2019-08-30)
+<a href="https://webplatform.news/issues/2019-08-30" class="button">Web Platform News: Sunday issue →</a>
