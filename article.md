@@ -1,4 +1,4 @@
-# Weekly platform news: Tracking via web storage, First Input Delay, navigating headings
+# Weekly platform news: Tracking via web storage, First Input Delay, navigating by headings
 
 ## Safari’s tracking prevention limits web storage
 
