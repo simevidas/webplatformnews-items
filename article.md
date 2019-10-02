@@ -24,7 +24,7 @@ Tip: If your website is popular enough to be included in the Chrome UX Report, y
 
 ## Screen reader users navigate web pages by headings
 
-According to WebAIM’s recent screen reader user survey, the most popular screen readers are NVDA (41%) and JAWS (40%) on desktop, and VoiceOver (71%) and TalkBack (33%) on mobile.
+According to WebAIM’s recent screen reader user survey, the most popular screen readers are NVDA (41%) and JAWS (40%) on desktop (primary screen reader), and VoiceOver (71%) and TalkBack (33%) on mobile (commonly used screen readers).
 
 When trying to find information on a web page, most screen reader users navigate the page through the headings (`<h1>`, `<h2>`, `<h3>`, etc.).
 
