@@ -8,7 +8,7 @@ When people navigate from websites with tracking abilities to other websites via
 
 As a new countermeasure, Safari will now delete _all non-cookie website data_ in these scenarios if the user hasn’t interacted with the website for seven days.
 
-> The reason why we cap the lifetime of script-writable storage is simple. Site owners have been convinced to deploy third-party scripts on their websites for years. Now those scripts are being repurposed to circumvent browsers’ protections against third-party tracking. By limiting the ability to use any script-writeable storage for cross-site tracking purposes, [Safari’s tracking prevention] makes sure that third-party scripts cannot leverage the storage powers they have gained over all these websites.
+> The reason why we cap the lifetime of script-writable storage is simple. Site owners have been convinced to deploy third-party scripts on their websites for years. Now those scripts are being repurposed to circumvent browsers’ protections against third-party tracking. By limiting the ability to use any script-writable storage for cross-site tracking purposes, [Safari’s tracking prevention] makes sure that third-party scripts cannot leverage the storage powers they have gained over all these websites.
 
 <small>(via [John Wilander](https://webkit.org/blog/9521/intelligent-tracking-prevention-2-3/))</small>
 
