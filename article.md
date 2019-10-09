@@ -22,7 +22,7 @@ Starting next February, Chrome will auto-upgrade all passive mixed content to `h
 
 ## Fast connections are still not common in many countries
 
-Data from Chrome UX Report shows that there are still many countries and territories in the world where most people access the Internet over a 3G or slower connection. (This includes a number of small island countries that are not visible on this map.)
+Data from Chrome UX Report shows that there are still many countries and territories in the world where most people access the Internet over a 3G or slower connection. (This includes a number of small island nations that are not visible on this map.)
 
 ![](/media/countries-slow-connections.png)
 
