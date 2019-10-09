@@ -1,45 +1,37 @@
-# Weekly platform news: Tracking via web storage, First Input Delay, navigating by headings
+# Weekly platform news: Impact of Third-Party Code, Passive Mixed Content, Countries with Slowest Connections
 
-## Safari’s tracking prevention limits web storage
+## Measure the impact of third-party code during page load
 
-Some social networks and other websites that engage in cross-site tracking add a query string or fragment to external links for tracking purposes (Apple calls this “abuse of link decoration”).
+Lighthouse, Chrome’s built-in auditing tool, now shows a warning when the impact of third-party code on page load performance is too high. The pre-existing “Third-party usage” diagnostic audit will now _fail_ if the total main-thread blocking time caused by third-parties is larger than 250 ms during page load.
 
-When people navigate from websites with tracking abilities to other websites via such “decorated” links, Safari will expire the cookies that are created on the loaded web pages after 24 hours. This has led some trackers to start using other types of storage (e.g., `localStorage`) to track people on websites.
+![](/media/impact-third-party-code.png)
 
-As a new countermeasure, Safari will now delete _all non-cookie website data_ in these scenarios if the user hasn’t interacted with the website for seven days.
+Note: This feature was added in Lighthouse version 5.3.0, which is currently available in Chrome Canary.
 
-> The reason why we cap the lifetime of script-writable storage is simple. Site owners have been convinced to deploy third-party scripts on their websites for years. Now those scripts are being repurposed to circumvent browsers’ protections against third-party tracking. By limiting the ability to use any script-writable storage for cross-site tracking purposes, [Safari’s tracking prevention] makes sure that third-party scripts cannot leverage the storage powers they have gained over all these websites.
+<small>(via [Patrick Hulce](https://github.com/googlechrome/lighthouse/pull/9486))</small>
 
-<small>(via [John Wilander](https://webkit.org/blog/9521/intelligent-tracking-prevention-2-3/))</small>
+## Passive mixed content is coming to an end
 
-## First Input Delay is much worse on mobile
+Currently, browsers still allow web pages loaded over a secure connection (HTTPS) to load images, videos, and audio over an insecure connection. Such insecurely-loaded resources on securely-loaded pages are known as “passive mixed content,” and they represent a [security and privacy risk](https://w3c.github.io/webappsec-mixed-content/level2.html#intro).
 
-First Input Delay (FID), the [delay until the page is able to respond to the user](https://youtu.be/ymxs8OSXiUA?t=167), is much worse on mobile: Only 13% of websites have a fast FID on mobile, compared to 70% on desktop.
+> An insecurely-loaded image can allow an attacker to communicate incorrect information to the user (e.g., a fabricated stock chart), mutate client-side state (e.g., set a cookie), or induce the user to take an unintended action (e.g., changing the label on a button).
 
-![](/media/fid-desktop-mobile.jpg)
+Starting next February, Chrome will auto-upgrade all passive mixed content to `https:`, and resources that fail to load over `https:` will be blocked. According to data from Chrome Beta, auto-upgrade currently fails for about 30% of image loads.
 
-Tip: If your website is popular enough to be included in the Chrome UX Report, you can check your site’s mobile vs. desktop FID data on [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/).
+<small>(via [Emily Stark](https://twitter.com/estark37/status/1179812991862112256))</small>
 
-<small>(via [Rick Viscomi](https://twitter.com/rick_viscomi/status/1176731125991038978))</small>
+## Fast connections are still not common in many countries
 
-## Screen reader users navigate web pages by headings
+Data from Chrome UX Report shows that there are still many countries and territories around the world where most people access the Internet over a 3G or slower connection.
 
-According to WebAIM’s recent screen reader user survey, the most popular screen readers are NVDA (41%) and JAWS (40%) on desktop (primary screen reader), and VoiceOver (71%) and TalkBack (33%) on mobile (commonly used screen readers).
+![](/media/countries-slow-connections.png)
 
-When trying to find information on a web page, most screen reader users navigate the page through the headings (`<h1>`, `<h2>`, `<h3>`, etc.).
-
-> The usefulness of proper heading structures is very high, with 86.1% of respondents finding heading levels very or somewhat useful.
-
-Tip: You can check a web page’s heading structure with W3C’s [Nu Html Checker](https://validator.w3.org/nu/) (enable the “outline” option).
-
-![](/media/heading-level-outline.png)
-
-<small>(via [WebAIM](https://twitter.com/webaim/status/1178383652658397184))</small>
+<small>(via [Paul Calvano](https://twitter.com/paulcalvano/status/1179811059835822080))</small>
 
 ## More news…
 
-![](/media/sunday-issue-11.png)
+![](/media/sunday-issue-12.png)
 
 Read even more news in my weekly **Sunday issue** that can be delivered to you via email every Monday morning.
 
-<a href="https://webplatform.news/issues/2019-08-30" class="button">Web Platform News: Sunday issue →</a>
+<a href="https://webplatform.news/issues/2019-08-30" class="button">More News →</a>
