@@ -1,4 +1,4 @@
-# Weekly platform news: Impact of Third-Party Code, Passive Mixed Content, Countries with Slowest Connections
+# Weekly platform news: Impact of Third-Party Code, Passive Mixed Content, Countries with the Slowest Connections
 
 ## Measure the impact of third-party code during page load
 
