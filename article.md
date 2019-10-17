@@ -1,4 +1,4 @@
-# Weekly platform news: CSS `column-span` Property, ADA applies to Websites, Auto-generated Image Descriptions
+# Weekly Platform News: CSS `column-span` Property, ADA applies to Websites, Auto-generated Image Descriptions
 
 ## The CSS `column-span` property will soon be widely supported
 
