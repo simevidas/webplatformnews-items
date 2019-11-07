@@ -26,7 +26,7 @@ According to a study commissioned by Google, the majority of people prefer tappa
 
 ## The grid form use-case for CSS Subgrid
 
-CSS Subgrid is shipping in Firefox next month. This new feature allows grid items of nested grids to be put onto the outer grid, which is useful in situations where the wanted grid items are not direct children of the grid container.
+CSS Subgrid is shipping in Firefox next month. This new feature enables grid items of nested grids to be put onto the outer grid, which is useful in situations where the wanted grid items are not direct children of the grid container.
 
 ![](/media/subgrid-form.png)
 
