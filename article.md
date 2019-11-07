@@ -1,39 +1,33 @@
-# Weekly Platform News: WebAPK Limited to Chrome, Discernible Focus Rectangles, Modal Window API
+# Weekly Platform News: Web Apps in Galaxy Store, Tappable Stories, CSS Subgrid
 
-## WebAPKs are not available to Firefox on Android
+## Securely generated passwords in Firefox
 
-On Android, both Chrome and Firefox have an “Add to home screen” option, but while Firefox merely adds a shortcut for the web app to the user’s home screen, Chrome actually installs the web app (as long as it meets the [PWA install criteria](https://developers.google.com/web/fundamentals/app-install-banners/#criteria)) via a [WebAPK](https://developers.google.com/web/fundamentals/integration/webapks).
+Firefox now suggests a securely generated password when the user focuses an `<input>` element that has the `autocomplete="new-password"` attribute value. This option is also available via the context menu on any password field.
 
-Progressive Web Apps installed in such a way are added to the device’s app drawer, and URLs that are within the PWA’s scope (as specified in its manifest) open in the PWA instead of the default browser.
+<video src="/media/firefox-generated-password.mp4" controls></video>
 
-Tiger Oakes who is implementing PWA-related features at Mozilla, explains why Firefox cannot install PWAs on Android: “WebAPK is not available to us since we don’t own an app store like Google Play and Galaxy Apps.”
+<small>(via [The Firefox Frontier](https://blog.mozilla.org/firefox/password-security-features/))</small>
 
-<small>(via [Tiger Oakes](https://twitter.com/Not_Woods/status/1185235124046032896))</small>
+## Web apps in Samsung’s app store
 
-## More accessible focus rectangles are coming to Chrome and Edge
+Samsung has started adding Progressive Web Apps to its app store, Samsung Galaxy Store, which is available on Samsung devices. The new “Web apps” category is visible initially only in the USA. If you own a PWA, you can send its URL to pwasupport@samsung.com, and Samsung will help you get onboarded into Galaxy Store.
 
-Microsoft and Google have made accessibility improvements to various form controls. The two main changes are the larger touch targets on the time and date inputs, and the redesigned focus rectangles that are now easily discernible on any background.
+![](/media/galaxy-store-web-apps.png)
 
-<video controls src="/media/improved-focus-rectangles.mp4"></video>
+<small>(via [Ada Rose Cannon](https://medium.com/samsung-internet-dev/introducing-progressive-web-apps-to-samsung-galaxy-store-47ecd317725b))</small>
 
-The updated form controls are available in the preview version of Edge. Mac users may have to manually enable the “Web Platform Fluent Controls” flag on the `about:flags` page.
+## Tappable stories on the mobile web
 
-<small>(via [Microsoft Edge Dev](https://twitter.com/MSEdgeDev/status/1184129651612028928))</small>
+According to a study commissioned by Google, the majority of people prefer tappable stories over scrolling articles when consuming content on the mobile web. Google is using this study to promote AMP Stories, which is a format for tappable stories on the mobile web.
 
-## A newly proposed API for loading third-parties in modal windows
+> Both studies had participants interact with real-world examples of tappable stories on the mobile web as well as scrolling article equivalents. Forrester found that 64% of respondents preferred the tappable mobile web story format over its scrolling article equivalent.
 
-The proposed Modal Window API would allow a website to load another website in a modal window (in a top-level browsing context) for the purposes of authentication, payments, sharing, access to third-party services, etc.
+<small>(via [Alex Durán](https://blog.amp.dev/2019/10/25/users-prefer-tappable-stories-on-the-mobile-web/))</small>
 
-Only a single modal window would be allowed at a time, and the two websites could communicate with each other via message events (`postMessage` method).
+## The grid form use-case for CSS Subgrid
 
-This API is intended as a better alternative to existing methods, such as pop-ups, which can be confusing to users and blocked by browsers, and redirects, which cause the original context to be torn down and recreated (or completely lost in the case of an error in the third-party service).
+CSS Subgrid is shipping in Firefox next month. This new feature allows grid items of nested grids to be put onto the outer grid, which is useful in situations where the wanted grid items are not direct children of the grid container.
 
-<small>(via [Adrian Hope-Bailie](https://discourse.wicg.io/t/proposal-modal-window/3982))</small>
+![](/media/subgrid-form.png)
 
-## More news…
-
-![](/media/sunday-issue-14.png)
-
-Read even more news in my weekly **Sunday issue** that can be delivered to you via email every Monday morning.
-
-<a href="https://webplatform.news/issues/2019-08-30" class="button">More News →</a>
+<small>(via [Šime Vidas](https://webplatform.news/issues/2019-11-05))</small>
