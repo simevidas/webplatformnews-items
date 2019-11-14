@@ -1,33 +1,39 @@
-# Weekly Platform News: Web Apps in Galaxy Store, Tappable Stories, CSS Subgrid
+# Weekly Platform News: Internet Explorer Mode, Speed Report in Search Console, Restricting Notification Prompts
 
-## Securely generated passwords in Firefox
+## Edge browser with new Internet Explorer mode launches in January
 
-Firefox now suggests a securely generated password when the user focuses an `<input>` element that has the `autocomplete="new-password"` attribute value. This option is also available via the context menu on any password field.
+Microsoft expects to release the new Chromium-based Edge browser on January 15, on both Windows and macOS. This browser includes a new Internet Explorer mode that allows Edge to automatically and seamlessly render tabs containing specific legacy content (e.g., a company’s intranet) using Internet Explorer’s engine instead of Edge’s standard engine (Blink).
 
-<video src="/media/firefox-generated-password.mp4" controls></video>
+Here’s a sped-up excerpt from [Fred Pullen’s presentation](https://www.youtube.com/watch?v=E2dm29djv3U) that shows the new Internet Explorer mode in action:
 
-<small>(via [The Firefox Frontier](https://blog.mozilla.org/firefox/password-security-features/))</small>
+<video controls src="/media/edge-ie-mode.mp4"></video>
 
-## Web apps in Samsung’s app store
+<small>(via [Kyle Pflug](https://blogs.windows.com/msedgedev/2019/11/04/edge-chromium-release-candidate-get-ready/))</small>
 
-Samsung has started adding Progressive Web Apps to its app store, Samsung Galaxy Store, which is available on Samsung devices. The new “Web apps” category is visible initially only in the USA. If you own a PWA, you can send its URL to pwasupport@samsung.com, and Samsung will help you get onboarded into Galaxy Store.
+## Speed report experimentally available in Google Search Console
 
-![](/media/galaxy-store-web-apps.png)
+The new Speed report in [Google’s Search Console](https://search.google.com/search-console) shows how your website performs for real-world Chrome users (both on mobile and desktop). Pages that “[pass a certain threshold of visits](https://twitter.com/danielwaisberg/status/1191697864830914561)” are categorized into fast, moderate, and slow pages.
 
-<small>(via [Ada Rose Cannon](https://medium.com/samsung-internet-dev/introducing-progressive-web-apps-to-samsung-galaxy-store-47ecd317725b))</small>
+**Tip:** After fixing a speed issue, use the “Validate fix” button to notify Google Search. Google will verify the fix and re-index the pages if the issue is resolved.
 
-## Tappable stories on the mobile web
+![](/media/search-console-validate-fix.png)
 
-According to a study commissioned by Google, the majority of people prefer tappable stories over scrolling articles when consuming content on the mobile web. Google is using this study to promote AMP Stories, which is a format for tappable stories on the mobile web.
+<small>(via [Google Webmasters](https://twitter.com/googlewmc/status/1191309373999636481))</small>
 
-> Both studies had participants interact with real-world examples of tappable stories on the mobile web as well as scrolling article equivalents. Forrester found that 64% of respondents preferred the tappable mobile web story format over its scrolling article equivalent.
+## Facebook’s notification prompt will disappear in Firefox
 
-<small>(via [Alex Durán](https://blog.amp.dev/2019/10/25/users-prefer-tappable-stories-on-the-mobile-web/))</small>
+Firefox will soon start blocking notification prompts on websites that request the notification permission immediately on page load (Facebook does this). Instead of the prompt, a small “speech balloon” icon will be shown in the URL bar.
 
-## The grid form use-case for CSS Subgrid
+<video controls src="/media/firefox-blocked-prompt.png"></video>
 
-CSS Subgrid is shipping in Firefox next month. This new feature enables grid items of nested grids to be put onto the outer grid, which is useful in situations where the wanted grid items are not direct children of the grid container.
+**Note:** Websites will still be able to show a notification prompt in Firefox as long as they request permission in response to a user interaction (a click, tap, or key press).
 
-![](/media/subgrid-form.png)
+<small>(via [Marcos Càceres](https://twitter.com/marcosc/status/1191514737877471238))</small>
 
-<small>(via [Šime Vidas](https://webplatform.news/issues/2019-11-05))</small>
+## More news…
+
+![](/media/sunday-issue-17.png)
+
+Read more news in my weekly newsletter for web developers. Pledge as little as \$2 per month to get the latest news from me via email every Monday.
+
+<a href="https://www.patreon.com/posts/31497516" class="button">More News →</a>
