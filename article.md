@@ -1,45 +1,35 @@
-# Weekly Platform News: Contrast Ratio Range, `replaceAll` Method, Native File System API
+# Weekly Platform News: Upgrading Navigations to HTTPS, Sale of .ORG Domain, New Browser Engine
 
-## Firefox shows the contrast ratio range for text on a multicolored background
+## DuckDuckGo upgrades navigations to HTTPS
 
-According to [Success Criterion 1.4.3](https://w3c.github.io/wcag/21/guidelines/#contrast-minimum) of the Web Content Accessibility Guidelines (WCAG), text should have a contrast ratio of at least 4.5. (A lower contrast ratio is acceptable only if the text is `24px` or larger.)
+DuckDuckGo has open-sourced its “Smarter Encryption” technology that enables upgrading navigations from HTTP to HTTPS, and Pinterest (a popular social network) is already using it for outbound traffic (when people navigate from Pinterest to other websites), with great results: Their outbound HTTPS traffic increased from 60% to 80%.
 
-If the background of the text is not a solid color but a color gradient or photograph, you can use the special element picker in Firefox’s Accessibility panel to get a range of contrast ratios based on the element’s actual background.
+DuckDuckGo uses its crawler to automatically generate and maintain a huge list of websites that support HTTPS, approximately 12 million entries. For comparison, Chromium’s HSTS Preload List contains only about 85 thousand entries.
 
-<video controls src="/media/firefox-accessibility-picker.mp4"></video>
+![](/media/https-list-comparison.png)
 
-<small>(via [Šime Vidas](https://twitter.com/simevidas/status/1181941591826685954))</small>
+<small>(via [DuckDuckGo](https://spreadprivacy.com/duckduckgo-smarter-encryption/))</small>
 
-## Replacing all instances of a substring in a string
+## Nonprofits oppose the sale of the .org domain
 
-The new JavaScript `replaceAll` method makes it easier to replace all instances of a substring in a string without having to convert the substring to a regex first, which is “hard to get right since JavaScript doesn’t offer a built-in mechanism to escape regular expression patterns.”
+A coalition of organizations consisting of EFF, Wikimedia, and many others, are urging the Internet Society to stop the sale of the nonprofit organization that operates the .org domain to an investment firm.
 
-```js
-// BEFORE
-str = str.replace(/foo/g, "bar");
+> Non-governmental organizations (NGOs) all over the world rely on the .org top-level domain. … We cannot afford to put them into the hands of a private equity firm that has not earned the trust of the NGO community.
 
-// AFTER
-str = str.replaceAll("foo", "bar");
-```
+In a [separate blog post](https://marksurman.commons.ca/2019/12/03/questions-about-org/), Mark Surman (CEO of Mozilla Foundation) urges the Internet Society to “step back and provide public answers to questions of interest to the public and the millions of orgs that have made dot org their home online for the last 15 years.”
 
-Note: This new string method has not yet shipped in browsers, but you can start using it today via Babel (it’s automatically polyfilled by [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)).
+<small>(via [Elliot Harmon](https://www.eff.org/deeplinks/2019/11/nonprofit-community-stands-together-protect-org))</small>
 
-<small>(via [Mathias Bynens](https://twitter.com/mathias/status/1193917548875501568))</small>
+## A new browser engine is in development
 
-## Try out the Native File System API in Chrome
+Ekioh (a company from Cambridge, UK) is developing an entirely new browser engine for their Flow browser, which also includes Mozilla’s SpiderMonkey as its JavaScript engine. The browser can already run web apps such as Gmail (mostly), and the company plans to release it on desktop soon.
 
-The Native File System API, which is [experimentally supported in Chrome](https://groups.google.com/a/chromium.org/d/msg/blink-dev/noan0cgEBGQ/t8DuK8_hDwAJ), allows web apps to read or save changes directly to local files on the person’s computer. The app is granted permission to view and edit files in a specific folder [via two separate prompts](https://twitter.com/simevidas/status/1196243432554950656).
-
-![](/media/file-system-prompt.png)
-
-You can try out this new feature by visiting [labs.vaadin.com](https://labs.vaadin.com/native-fs/) in Chrome on desktop.
-
-<small>(via [Thomas Steiner](https://twitter.com/tomayac/status/1194715245781979136))</small>
+<small>(via [Flow Browser](https://twitter.com/FlowBrowser/status/1200070712121348096))</small>
 
 ## More news…
 
-![](/media/sunday-issue-18.png)
+![](/media/sunday-issue-20.png)
 
 Read more news in my weekly newsletter for web developers. Pledge as little as \$2 per month to get the latest news from me via email every Monday.
 
-<a href="https://www.patreon.com/posts/sunday-issue-18-31699106" class="button">More News →</a>
+<a href="https://www.patreon.com/posts/sunday-issue-20-32066530" class="button">More News →</a>
