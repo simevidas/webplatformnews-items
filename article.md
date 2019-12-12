@@ -1,35 +1,39 @@
-# Weekly Platform News: Upgrading Navigations to HTTPS, Sale of .ORG Domain, New Browser Engine
+# Weekly Platform News: Strict Tracking Protection, Dark Web Pages, Periodic Background Sync
 
-## DuckDuckGo upgrades navigations to HTTPS
+## Firefox for Android will block tracking content
 
-DuckDuckGo has open-sourced its “Smarter Encryption” technology that enables upgrading navigations from HTTP to HTTPS, and Pinterest (a popular social network) is already using it for outbound traffic (when people navigate from Pinterest to other websites), with great results: Their outbound HTTPS traffic increased from 60% to 80%.
+Mozilla has announced that the upcoming revamped Firefox for Android (currently available in a test version under the name “Firefox Preview”) will include strict tracking protection by default.
 
-DuckDuckGo uses its crawler to automatically generate and maintain a huge list of websites that support HTTPS, approximately 12 million entries. For comparison, Chromium’s HSTS Preload List contains only about 85 thousand entries.
+> On the phone or tablet, most users care much more about performance and blocking of annoyances compared to desktop. Users are more forgiving when a site doesn’t load exactly like it’s meant to. So we decided that while Firefox for desktop’s default mode is “Standard,” Firefox Preview will use “Strict” mode.
 
-![](/media/https-list-comparison.png)
+Strict tracking protection additionally blocks “tracking content”: ads, videos, and other content with tracking code.
 
-<small>(via [DuckDuckGo](https://spreadprivacy.com/duckduckgo-smarter-encryption/))</small>
+![](/media/firefox-tracking-content-blocking.png)
 
-## Nonprofits oppose the sale of the .org domain
+<small>(via [Mozilla](https://blog.mozilla.org/futurereleases/2019/12/03/firefox-preview-beta-reaches-another-milestone/))</small>
 
-A coalition of organizations consisting of EFF, Wikimedia, and many others, are urging the Internet Society to stop the sale of the nonprofit organization that operates the .org domain to an investment firm.
+## Opera adds option that renders all websites in dark mode
 
-> Non-governmental organizations (NGOs) all over the world rely on the .org top-level domain. … We cannot afford to put them into the hands of a private equity firm that has not earned the trust of the NGO community.
+Opera for Android has added a “Dark web pages” option that renders all websites in dark mode. If a website does not provide dark mode styles (via the CSS `prefers-color-scheme` media feature), Opera applies its own “clever CSS changes” to render the site in dark mode regardless.
 
-In a [separate blog post](https://marksurman.commons.ca/2019/12/03/questions-about-org/), Mark Surman (CEO of Mozilla Foundation) urges the Internet Society to “step back and provide public answers to questions of interest to the public and the millions of orgs that have made dot org their home online for the last 15 years.”
+![](/media/opera-dark-web-pages.png)
 
-<small>(via [Elliot Harmon](https://www.eff.org/deeplinks/2019/11/nonprofit-community-stands-together-protect-org))</small>
+<small>(via [Stefan Stjernelund](https://blogs.opera.com/mobile/2019/12/opera-android-55-night-mode/?utm_source=tw&utm_medium=tw_ofa55&utm_campaign=tw_ofa55))</small>
 
-## A new browser engine is in development
+## Periodic Background Sync is coming to Chrome
 
-Ekioh (a company from Cambridge, UK) is developing an entirely new browser engine for their Flow browser, which also includes Mozilla’s SpiderMonkey as its JavaScript engine. The browser can already run web apps such as Gmail (mostly), and the company plans to release it on desktop soon.
+Google intends to ship Periodic Background Sync in the next version of Chrome (early next year). This feature will enable installed web apps to run background tasks at periodic intervals with network connectivity.
 
-<small>(via [Flow Browser](https://twitter.com/FlowBrowser/status/1200070712121348096))</small>
+> Chrome’s implementation restricts the API to installed web apps. Chrome grants the permission on behalf of the user for any installed web app. The API is not available outside of installed PWAs.
+
+Apple and Mozilla are currently opposed to this API. At Mozilla, there are opinions that the feature is “harmful in its current state,” while Apple states multiple privacy and security risks.
+
+<small>(via [Mugdha Lakhani](https://groups.google.com/a/chromium.org/d/msg/blink-dev/KSJViFp3hMc/e-Yzd3_-AwAJ))</small>
 
 ## More news…
 
-![](/media/sunday-issue-20.png)
+![](/media/sunday-issue-21.png)
 
 Read more news in my weekly newsletter for web developers. Pledge as little as \$2 per month to get the latest news from me via email every Monday.
 
-<a href="https://www.patreon.com/posts/sunday-issue-20-32066530" class="button">More News →</a>
+<a href="https://www.patreon.com/posts/sunday-issue-21-32282359" class="button">More News →</a>
