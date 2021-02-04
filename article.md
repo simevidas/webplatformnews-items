@@ -1,39 +1,126 @@
-# Weekly Platform News: Strict Tracking Protection, Dark Web Pages, Periodic Background Sync
+# The enhanced `:not()` pseudo-class enables new kinds of powerful selectors
 
-## Firefox for Android will block tracking content
+After a years-long wait, the enhanced `:not()` pseudo-class has finally shipped in Chrome and Firefox, and is now supported in [all major browser engines](https://caniuse.com/css-not-sel-list). This new version of `:not()` accepts [complex selectors](https://drafts.csswg.org/selectors/#complex) and even entire selector lists.
 
-Mozilla has announced that the upcoming revamped Firefox for Android (currently available in a test version under the name “Firefox Preview”) will include strict tracking protection by default.
+For example, you can now select all `<p>` elements that are _not_ contained within an `<article>` element.
 
-> On the phone or tablet, most users care much more about performance and blocking of annoyances compared to desktop. Users are more forgiving when a site doesn’t load exactly like it’s meant to. So we decided that while Firefox for desktop’s default mode is “Standard,” Firefox Preview will use “Strict” mode.
+```css
+/* select all <p>s that are descendants of <article> */
+article p {
+}
 
-Strict tracking protection additionally blocks “tracking content”: ads, videos, and other content with tracking code.
+/* NEW! */
+/* select all <p>s that are not descendants of <article> */
+p:not(article *) {
+}
+```
 
-![](/media/firefox-tracking-content-blocking.png)
+In another example, you may want to select the first list item that does _not_ have the `hidden` attribute (or any other attribute, for that matter). The best selector for this task would be `:nth-child(1 of :not([hidden]))`, but the `of` notation is still [only supported in Safari](https://twitter.com/bramus/status/1343854478005575681). Luckily, this unsupported selector can now be re-written using only the enhanced `:not()` pseudo-class.
 
-<small>(via [Mozilla](https://blog.mozilla.org/futurereleases/2019/12/03/firefox-preview-beta-reaches-another-milestone/))</small>
+```css
+/* select all non-hidden elements that are not preceded by a
+   non-hidden sibling (i.e., select the first non-hidden child) */
+:not([hidden]):not(:not([hidden]) ~ :not([hidden])) {
+}
+```
 
-## Opera adds option that renders all websites in dark mode
+https://codepen.io/simevidas/pen/NWbGKNZ?editors=1100
 
-Opera for Android has added a “Dark web pages” option that renders all websites in dark mode. If a website does not provide dark mode styles (via the CSS `prefers-color-scheme` media feature), Opera applies its own “clever CSS changes” to render the site in dark mode regardless.
+# The HTTP `Refresh` header can be an accessibility issue
 
-![](/media/opera-dark-web-pages.png)
+The HTTP `Refresh` header (and equivalent HTML `<meta>` tag) is a [very old](https://en.wikipedia.org/wiki/Meta_refresh#History) and [widely supported](https://caniuse.com/mdn-html_elements_meta_http-equiv_refresh) non-standard feature that instructs the browser to automatically and periodically reload the page after a given amount of time.
 
-<small>(via [Stefan Stjernelund](https://blogs.opera.com/mobile/2019/12/opera-android-55-night-mode/?utm_source=tw&utm_medium=tw_ofa55&utm_campaign=tw_ofa55))</small>
+<!-- prettier-ignore -->
+```html
+<!-- refresh page after 60 seconds -->
+<meta http-equiv="refresh" content="60">
+```
 
-## Periodic Background Sync is coming to Chrome
+According to Google’s data, the `<meta http-equiv="refresh">` tag is used by a whopping [2.8% of page loads](https://www.chromestatus.com/metrics/feature/timeline/popularity/1548) in Chrome (down from 4% a year ago). All these websites risk [failing several success criteria](https://w3c.github.io/wcag/techniques/failures/F41) of the Web Content Accessibility Guidelines (WCAG):
 
-Google intends to ship Periodic Background Sync in the next version of Chrome (early next year). This feature will enable installed web apps to run background tasks at periodic intervals with network connectivity.
+> If the time interval is too short, and there is no way to turn auto-refresh off, people who are blind will not have enough time to make their screen readers read the page before <mark>the page refreshes unexpectedly</mark> and causes the screen reader to begin reading at the top.
 
-> Chrome’s implementation restricts the API to installed web apps. Chrome grants the permission on behalf of the user for any installed web app. The API is not available outside of installed PWAs.
+However, WCAG does allow using the `<meta http-equiv="refresh">` tag specifically with the value `0` to perform a [client-side redirect](https://w3c.github.io/wcag/techniques/html/H76) in the case that the author does not control the server and hence cannot perform a proper HTTP redirect.
 
-Apple and Mozilla are currently opposed to this API. At Mozilla, there are opinions that the feature is “harmful in its current state,” while Apple states multiple privacy and security risks.
+<!-- prettier-ignore -->
+```html
+<!-- a client-side redirect to another web page -->
+<meta http-equiv="refresh" content="0;url='https://example.com'">
+```
 
-<small>(via [Mugdha Lakhani](https://groups.google.com/a/chromium.org/d/msg/blink-dev/KSJViFp3hMc/e-Yzd3_-AwAJ))</small>
+([via Stefan Judis](https://www.stefanjudis.com/today-i-learned/how-to-refresh-a-page-in-an-interval-without-javascript/))
 
-## More news…
+# How to disable smooth scrolling for the “Find on page…” feature in Chrome
 
-![](/media/sunday-issue-21.png)
+CSS `scroll-behavior: smooth` is [supported](https://caniuse.com/css-scroll-behavior) in Chrome and Firefox. When this declaration is set on the `<html>` element, the browser scrolls the page “[in a smooth fashion](https://drafts.csswg.org/cssom-view/#smooth-scrolling).” This applies to navigations, the standard scrolling APIs (e.g., `window.scrollTo({ top: 0 })`), and scroll snapping operations ([CSS Scroll Snap](https://css-tricks.com/practical-css-scroll-snapping/)).
 
-Read more news in my weekly newsletter for web developers. Pledge as little as \$2 per month to get the latest news from me via email every Monday.
+Unfortunately, Chrome [erroneously](https://bugs.chromium.org/p/chromium/issues/detail?id=866694) keeps smooth scrolling enabled even when the user performs a text search on the page (“Find on page…” feature). Some people find this [annoying](https://twitter.com/chriscoyier/status/1346513455516426242). Until the bug in Chrome is fixed, you can use Christian Schaefer’s clever [CSS workaround](https://schepp.dev/posts/smooth-scrolling-and-page-search/) that effectively disables smooth scrolling for the “Find on page…” feature only.
 
-<a href="https://www.patreon.com/posts/sunday-issue-21-32282359" class="button">More News →</a>
+```css
+@keyframes smoothscroll1 {
+  from,
+  to {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes smoothscroll2 {
+  from,
+  to {
+    scroll-behavior: smooth;
+  }
+}
+
+html {
+  animation: smoothscroll1 1s;
+}
+
+html:focus-within {
+  animation-name: smoothscroll2;
+  scroll-behavior: smooth;
+}
+```
+
+In the following demo, notice how clicking the links scrolls the page smoothly while searching for the words “top” and “bottom” scrolls the page instantly.
+
+https://codepen.io/Schepp/full/wvzNLJz
+
+# Safari still supports the `media` attribute on video sources
+
+With the HTML `<video>` element, it is possible to declare multiple video sources of different MIME types and encodings. This allows websites to use more modern and efficient video formats in supporting browsers, while providing a fallback for other browsers.
+
+<!-- prettier-ignore -->
+```html
+<video>
+  <source src="/flower.webm" type="video/webm">
+  <source src="/flower.mp4" type="video/mp4">
+</video>
+```
+
+In the past, browsers also supported the `media` attribute on video sources. For example, a web page could load a higher-resolution video if the user’s viewport exceeded a certain size.
+
+<!-- prettier-ignore -->
+```html
+<video>
+  <source media="(min-width: 1200px)" src="/large.mp4" type="video/mp4">
+  <source src="/small.mp4" type="video/mp4">
+</video>
+```
+
+The above syntax is in fact still [supported in Safari](https://output.jsbin.com/heniqex/quiet) today, but it was removed from other browsers [around 2014](https://groups.google.com/a/chromium.org/g/blink-dev/c/5sWUMC_d8Tg/m/ZZ0Z7rfeCqUJ) because it was [not considered a good feature](https://lists.w3.org/Archives/Public/public-whatwg-archive/2012May/0171.html):
+
+> It is not appropriate for choosing between low resolution and high resolution because the environment can change (e.g., the user might fullscreen the video after it has begun loading and want high resolution). Also, bandwidth is not available in media queries, but even if it was, <mark>the user agent is in a better position to determine what is appropriate</mark> than the author.
+
+Scott Jehl (Filament Group) [argues](https://twitter.com/scottjehl/status/1349710278481637377) that the removal of this feature was a mistake and that websites should be able to deliver responsive video sources using `<video>` alone.
+
+> For every video we embed in HTML, we’re stuck with the choice of serving source files that are potentially too large or small for many users’ devices … or resorting to more complicated server-side or scripted or third-party solutions to deliver a correct size.
+
+Scott has written a [proposal](https://github.com/filamentgroup/html-video-responsive) for the reintroduction of `media` in video `<source>` elements and is welcoming feedback.
+
+# The CSS `clip-path: path()` function ships in Chrome
+
+It wasn’t mentioned in the latest [“New in Chrome 88” article](https://developer.chrome.com/blog/new-in-chrome-88/), but Chrome just [shipped](https://groups.google.com/a/chromium.org/g/blink-dev/c/E0bpVCaWPEg/m/anYk3vFfAwAJ) the `path()` function for the CSS `clip-path` property, which means that this feature is now supported in all three major browser engines (Safari, Firefox, and Chrome).
+
+The `path()` function is defined in the [CSS Shapes](https://drafts.csswg.org/css-shapes-1/#funcdef-path) module, and it accepts an [SVG path string](https://www.w3.org/TR/SVG11/paths.html#PathData). Chris calls this the [ultimate syntax](https://css-tricks.com/an-initial-implementation-of-clip-path-path/) for the `clip-path` property because it can clip an element with “literally any shape.” For example, here’s a photo clipped with a heart shape:
+
+https://codepen.io/chriscoyier/pen/BObqoy?editors=0100
