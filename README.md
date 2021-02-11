@@ -6,7 +6,7 @@ Chrome, Safari, and pretty much every other modern web browser except Firefox (m
 let autofilled = document.querySelectorAll(":-webkit-autofill");
 ```
 
-<video src="media/css-autofill-counter.mp4" controls width="603" height="286"></video>
+<video src="media/css-autofill-counter.mp4" controls></video>
 
 **Note:** There currently does not exist a standard `autocomplete` or `autofill` event that would fire when the browser autofills a form field, but you can [listen to the `input` event](https://paul.kinlan.me/detecting-when-autofill-happens/) on the web form and then check if any of its fields match the `:-webkit-autofill` selector.
 
@@ -25,7 +25,7 @@ In the article “[Let’s Bring Spacer GIFs Back!](https://www.joshwcomeau.com/
 CSS Grid is an alternative to such spacer elements. For example, the “Link to issue” link in CSS-Tricks’s [newsletter section](https://css-tricks.com/newsletters/) contains two non-breaking spaces (`&nbsp;`) to increase the spacing between the emoji character and text, but the link could instead be turned into a simple grid layout to gain finer control over the spacing via the `gap` property.
 
 <figure>
-  <img src="media/css-grid-gap-spacing.png" width="870" height="479" alt="">
+  <img src="media/css-grid-gap-spacing.png" alt="">
 </figure>
 
 # Websites agree that the pointer cursor is not just for links
@@ -62,7 +62,7 @@ https://codepen.io/simevidas/full/yLVVNaK
 Different browsers and operating systems sometimes use [different font metrics](https://github.com/w3c/csswg-drafts/issues/4792) even when rendering the same font. These differences affect the vertical position of text, which is especially [noticeable on large headings](https://tobireif.com/posts/ensuring_the_correct_vertical_position_of_large_text/).
 
 <figure>
-    <img src="media/inconsistent-ascent-metric.png" width="779" height="318" alt="">
+    <img src="media/inconsistent-ascent-metric.png" alt="">
 </figure>
 
 Similarly, the different font metrics of a web font and its fallback font can cause a layout shift when the fonts are swapped during page load.
