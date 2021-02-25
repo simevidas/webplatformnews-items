@@ -1,90 +1,79 @@
-# CSS `::-webkit-autofill` has become a standard feature
+# The new HTML `<popup>` element is in development
 
-Chrome, Safari, and pretty much every other modern web browser except Firefox (more on that later) have supported the [CSS `:-webkit-autofill` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:-webkit-autofill) for many years. This selector matches form fields that have been autofilled by the browser. Websites can use this feature to style autofilled fields in CSS ([with some limitations](https://developer.mozilla.org/en-US/docs/Web/CSS/:autofill)) and detect such fields in JavaScript.
+On January 21, Melanie Richards from the Microsoft Edge web platform team posted an [explainer](https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/Popup/explainer.md) for a proposed HTML `<popup>` element (the name is [not final](https://github.com/MicrosoftEdge/MSEdgeExplainers/issues/438)). A few hours later, Mason Freed from Google announced an [intent](https://groups.google.com/a/chromium.org/g/blink-dev/c/9y-Thg9UCxY/m/_4gShWjQAAAJ) to prototype this element in the Blink browser engine. Work on the implementation is taking place in Chromium [issue 1168738](https://bugs.chromium.org/p/chromium/issues/detail?id=1168738).
 
-```js
-let autofilled = document.querySelectorAll(":-webkit-autofill");
-```
+A popup is a temporary (transient) and “light-dismissable” UI element that is displayed on top of all other elements (in the “[top layer](https://github.com/whatwg/html/issues/4633)”). The goal for the `<popup>` element is to be fully stylable and accessible by default. A `<popup>` can be anchored to an activating element, such as a button, but it can also be a standalone element that is displayed on page load (e.g., a teaching UI).
 
-<video src="media/css-autofill-counter.mp4" controls></video>
+![](/media/popup-use-cases.png)
 
-**Note:** There currently does not exist a standard `autocomplete` or `autofill` event that would fire when the browser autofills a form field, but you can [listen to the `input` event](https://paul.kinlan.me/detecting-when-autofill-happens/) on the web form and then check if any of its fields match the `:-webkit-autofill` selector.
+A `<popup>` is automatically hidden when the user presses the <kbd>Esc</kbd> key or moves focus to a different element (this is called a [light dismissal](https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/Popup/explainer.md#light-dismiss)). Unlike the `<dialog>` element, only one `<popup>` can be shown at a time, and unlike the deprecated `<menu>` element, a `<popup>` can contain [arbitrary content](https://github.com/MicrosoftEdge/MSEdgeExplainers/issues/454), including interactive elements:
 
-The HTML Standard has now [standardized](https://github.com/whatwg/html/issues/6181) this feature by adding `:autofill` (and `:-webkit-autofill` as an alias) to the [list of pseudo-classes](https://html.spec.whatwg.org/multipage/semantics-other.html#pseudo-classes) that match HTML elements. This pseudo-class will also be [added](https://github.com/w3c/csswg-drafts/issues/5775) to the CSS Selectors module.
+> We imagine `<popup>` as being useful for various different types of popover UI. We’ve chosen to use an action menu as a primary example, but folks use popup-esque patterns for many different types of content.
 
-> The `:autofill` and `:-webkit-autofill` pseudo-classes must match `<input>` elements that have been autofilled by the user agent. These pseudo-classes must stop matching if the user edits the autofilled field.
+# Award-winning websites should honor the “reduce motion” preference
 
-Following standardization, both pseudo-classes have been [implemented](https://bugzilla.mozilla.org/show_bug.cgi?id=1685675) in Firefox and are expected to ship in Firefox 86 later this month.
+Earlier this week, AWWWARDS [announced](https://twitter.com/AWWWARDS/status/1364168347542310912) the winners of their Annual Awards for the best websites of 2020. The following websites were awarded:
 
-# You can use CSS Grid to define spacing in buttons and links
+- Site of the year: [cornrevolution.com](http://cornrevolution.com/)
+- Developer site of the year: [kodeclubs.com](https://www.kodeclubs.com/)
+- E-commerce site of the year: [eiger-extreme.mammut.com](https://eiger-extreme.mammut.com/)
+- Mobile site of the year: [synchronized.studio](https://synchronized.studio/)
+- Site of the year, users’ choice: [darknetflix.io](http://darknetflix.io/)
 
-In the article “[Let’s Bring Spacer GIFs Back!](https://www.joshwcomeau.com/react/modern-spacer-gif/)” Josh W. Comeau argues for using a “spacer” `<span>` element instead of a simple CSS margin to define the spacing between the icon and text of a button component.
-
-> In our home-button example, should the margin go on the back-arrow, or the text? It doesn’t feel to me like either element should “own” the space. It’s a distinct layout concern.
-
-CSS Grid is an alternative to such spacer elements. For example, the “Link to issue” link in CSS-Tricks’s [newsletter section](https://css-tricks.com/newsletters/) contains two non-breaking spaces (`&nbsp;`) to increase the spacing between the emoji character and text, but the link could instead be turned into a simple grid layout to gain finer control over the spacing via the `gap` property.
-
-<figure>
-  <img src="media/css-grid-gap-spacing.png" alt="">
-</figure>
-
-# Websites agree that the pointer cursor is not just for links
-
-The CSS Basic User Interface module defines the [CSS `cursor` property](https://drafts.csswg.org/css-ui-4/#cursor), which allows websites to change the type of cursor that is displayed when the user hovers specific elements. The specification has the following to say about the property’s `pointer` value:
-
-> <mark>The cursor is a pointer that indicates a link.</mark> … User agents must apply `cursor: pointer` to hyperlinks. … Authors should use `pointer` on links and may use on other interactive elements.
-
-Accordingly, browsers display the `pointer` cursor (rendered as a hand) on links and the `default` cursor (rendered as an arrow) on buttons. However, most websites (incl. Wikipedia) don’t agree with this default style and apply `cursor: pointer` to other interactive elements, such as buttons and checkboxes, as well.
-
-Another interactive element for which it [makes sense](https://css-tricks.com/two-issues-styling-the-details-element-and-how-to-solve-them/) to use the `pointer` cursor is the `<summary>` element (the “toggle button” for opening and closing the parent `<details>` element).
-
-https://codepen.io/hellogreg/pen/MWyvxOb
-
-# Browsers delay `autoplay` until the video comes into view
-
-Compared to modern video formats, animated GIF images are up to “[twice as expensive in energy use](https://webkit.org/blog/6784/new-video-policies-for-ios/).” Browsers have for that reason relaxed their video autoplay policies (some time ago) to encourage websites to switch from GIFs to silent or muted videos.
-
-```html
-<!-- a basic re-implementation of a GIF using <video> -->
-<video autoplay loop muted playsinline src="meme.mp4"></video>
-```
-
-If you’re using `<video muted autoplay>`, don’t worry about pausing such videos when they’re no longer visible in the viewport (e.g., using an [Intersection Observer](https://css-tricks.com/a-few-functional-uses-for-intersection-observer-to-know-when-an-element-is-in-view/)). All major browsers ([except Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1386280)) already perform this [optimization](https://webkit.org/blog/6784/new-video-policies-for-ios/) by default:
-
-> `<video autoplay>` elements will only begin playing when visible on-screen such as when they are scrolled into the viewport, made visible through CSS, and inserted into the DOM.
-
-https://codepen.io/simevidas/full/yLVVNaK
-
-([via Zach Leatherman](https://twitter.com/zachleat/status/1349788433879871488))
-
-# Chrome introduces three new `@font-face` descriptors
-
-Different browsers and operating systems sometimes use [different font metrics](https://github.com/w3c/csswg-drafts/issues/4792) even when rendering the same font. These differences affect the vertical position of text, which is especially [noticeable on large headings](https://tobireif.com/posts/ensuring_the_correct_vertical_position_of_large_text/).
-
-<figure>
-    <img src="media/inconsistent-ascent-metric.png" alt="">
-</figure>
-
-Similarly, the different font metrics of a web font and its fallback font can cause a layout shift when the fonts are swapped during page load.
-
-To help websites avoid layout shift and create interoperable text layouts, Chrome recently [added](https://www.chromestatus.com/feature/5651198621253632) the following three new CSS `@font-face` descriptors for overriding the font’s [default metrics](https://drafts.csswg.org/css-inline-3/#ascent-descent):
-
-- `ascent-override` (ascent is the height above the baseline)
-- `descent-override` (descent is the depth below the baseline)
-- `line-gap-override`
+All these websites are highly dynamic and show full-screen motion on load and during scroll. Unfortunately, such animations can cause dizziness and nausea in [people with vestibular disorders](https://w3c.github.io/wcag/understanding/animation-from-interactions.html). Websites are therefore advised to reduce or turn off non-essential animations via the [`prefers-reduced-motion` media query](https://css-tricks.com/introduction-reduced-motion-media-query/), which evaluates to true for people who have expressed their preference for reduced motion (e.g., the “Reduce motion” option on Apple’s platforms). **None of the winning websites do this.**
 
 ```css
-@font-face {
-  font-family: Roboto;
-  /* Merriweather Sans has 125.875px ascent 
-   * and 35px descent at 128px font size.
-   */
-  ascent-override: calc(125.875 / 128 * 100%);
-  descent-override: calc(35 / 128 * 100%);
-  src: local(Roboto-Regular);
+/* (code from animal-crossing.com) */
+@media (prefers-reduced-motion: reduce) {
+  .main-header__scene {
+    animation: none;
+  }
 }
 ```
 
-The following video shows how overriding the ascent and descent metrics of the fallback font (Roboto) to match the same metrics of the web font (Merriweather Sans) can avoid layout shift when swapping between these two fonts.
+An example of a website that does this correctly is the [official site](https://www.animal-crossing.com/new-horizons/) of last year’s Animal Crossing game. Not only does the website honor the user’s preference via `prefers-reduced-motion`, but it also provides its own “Reduce motion” toggle button at the very top of the page.
 
-https://www.youtube.com/watch?v=h_0T3SiISZg
+![](/media/animal-crossing-reduce-motion-toggle.png)
+
+([via Eric Bailey](https://twitter.com/ericwbailey/status/1351243179060768778))
+
+# Websites can now opt into cross-origin isolation
+
+Cross-origin isolation is part of a “[long-term security improvement](https://groups.google.com/a/chromium.org/g/blink-dev/c/U51-KZ51vNY/m/gdA2ZYt6AQAJ).” Websites can opt into cross-origin isolation by adding the following two HTTP response headers, which are already supported in Chrome and Firefox:
+
+```http
+Cross-Origin-Embedder-Policy: require-corp
+Cross-Origin-Opener-Policy: same-origin
+```
+
+A [cross-origin-isolated page](https://developer.chrome.com/blog/enabling-shared-array-buffer/) relinquishes its ability to load content from other origins without their explicit opt-in (via CORS headers), and in return the page gains access to some powerful APIs, such as `SharedArrayBuffer`.
+
+```js
+if (crossOriginIsolated) {
+  // post SharedArrayBuffer
+} else {
+  // do something else
+}
+```
+
+# The White House recommits to accessibility
+
+The new [WhiteHouse.gov](https://www.whitehouse.gov/) website of the Biden administration was built from scratch in just six weeks with accessibility as a top priority (“accessibility was top of mind”). Microsoft’s chief accessibility officer reviewed the site and [gave it the thumbs up](https://www.fastcompany.com/90596638/under-trump-whitehouse-gov-was-a-disaster-bidens-team-revamped-it-in-6-weeks).
+
+The website’s accessibility statement (linked from the site’s footer) declares a “commitment to accessibility” and directly references the latest version of the Web Content Accessibility Guidelines, [WCAG 2.1](https://w3c.github.io/wcag/21/guidelines/) (2018). This is [notable](https://www.boia.org/blog/white-house-embraces-wcag-with-accessibility-updates) because federal agencies in the USA are only required to comply with WCAG 2.0 (2008).
+
+> The Web Content Accessibility Guidelines are the most widely accepted standards for internet accessibility. … By referencing WCAG 2.1 (the latest version of the guidelines), the Biden administration may be indicating a broader acceptance of the WCAG model.
+
+# The CSS `100vw` value can cause a useless horizontal scrollbar
+
+On Windows, when a web page has a vertical scrollbar, that scrollbar consumes space and reduces the width of the page’s `<html>` element; such a scrollbar is called a [classic scrollbar](https://drafts.csswg.org/css-overflow-4/#scrollbar-gutter-property). The same is not the case on macOS, which uses overlay scrollbars instead of classic scrollbars by default; a vertical overlay scrollbar does not affect the width of the `<html>` element.
+
+**Note:** macOS users can switch from overlay scrollbars to classic scrollbars by setting “Show scroll bars” to ”Always” in System preferences > General.
+
+The CSS length value `100vw` is equal to the width of the `<html>` element. However, if a classic vertical scrollbar is added to the page, the `<html>` element becomes narrower (as I explained above), but **`100vw` stays the same**. In other words, `100vw` is _wider_ than the page when a classic vertical scrollbar is present.
+
+This can be a problem for web developers on macOS who use `100vw` but are unaware of its peculiarity. For example, a website might set `width: 100vw` on its article header to make it [full-width](https://css-tricks.com/full-bleed/), but this will cause a useless horizontal scrollbar on Windows that some of the site’s visitors may find annoying.
+
+![](/media/100vw-horizontal-scrollbar.png)
+
+Web developers on macOS can [switch to classic scrollbars](https://www.matuzo.at/blog/css-pro-tip-for-mac-users-always-show-scroll-bars-in-macos/) to make sure that overflow bugs caused by `100vw` don’t slip under their radar. In the meantime, I have [asked](https://github.com/w3c/csswg-drafts/issues/6026) the CSS Working Group for comment.
