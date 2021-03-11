@@ -1,92 +1,103 @@
-# Chrome will stop displaying focus rings when clicking buttons
+# Logical CSS could soon become the new default
 
-Chrome, Edge, and other Chromium-based browsers display a focus indicator (a.k.a. focus ring) when the user clicks or taps a ([styled](https://twitter.com/myakura/status/1366972939384487936)) button. For comparison, Safari and Firefox don’t display a focus indicator when a button is clicked or tapped but only when the button is focused via the keyboard.
+Six years after Mozilla shipped the [first bits](https://lists.w3.org/Archives/Public/www-style/2015Jul/0040.html) of [CSS Logical Properties](https://drafts.csswg.org/css-logical-1/) in Firefox, this feature is now on a path to full browser support in 2021. The categories of logical properties and values listed in the table below are already supported in Firefox, Chrome, and the latest Safari Preview.
 
-INSERT VIDEO WITH CAPTION - /media/chrome-button-click-focus-indicator.mp4
+| CSS property or value | The logical equivalent |
+| :-------------------: | :--------------------: |
+|     `margin-top`      |  `margin-block-start`  |
+|  `text-align: right`  |   `text-align: end`    |
+|       `bottom`        |   `inset-block-end`    |
+|     `border-left`     | `border-inline-start`  |
+|         (n/a)         |    `margin-inline`     |
 
-<figure>
-    <video src="/media/chrome-button-click-focus-indicator.mp4" controls width="864" height="486"></video>
-    <figcaption>The focus ring will stay on the button until the user clicks somewhere else on the page</figcaption>
-</figure>
-
-Some developers find this behavior [annoying](https://twitter.com/LeaVerou/status/1045768279753666562) and are using various [workarounds](https://twitter.com/adamwathan/status/1244340194280648704) to prevent the focus ring from appearing when a button is clicked or tapped. For example, the popular [what-input library](https://github.com/ten1seven/what-input) continuously tracks the user’s input method (mouse, keyboard or touch), allowing the page to suppress focus rings specifically for mouse clicks.
+Logical CSS also introduces a few useful shorthands for tasks that in the past required multiple declarations. For example, `margin-inline` sets the `margin-left` and `margin-right` properties, while [`inset`](https://www.stefanjudis.com/today-i-learned/inset-is-a-shorthand-for-top-right-bottom-and-left/) sets the `top`, `right`, `bottom` and `left` properties.
 
 ```css
-[data-whatintent="mouse"] :focus {
-  outline: none;
+/* BEFORE */
+main {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* AFTER */
+main {
+  margin-inline: auto;
 }
 ```
 
-A more recent workaround was enabled by the addition of the CSS `:focus-visible` pseudo-class to Chromium a few months ago. In the current version of Chrome, clicking or tapping a button invokes the button’s `:focus` state but not its `:focus-visible` state, so the page can use a suitable selector to suppress focus rings for clicks and taps without affecting keyboard users.
+A website can add support for an RTL (right-to-left) layout by replacing all instances of `left` and `right` with their logical counterparts in the site’s CSS code. Switching to logical CSS makes sense for all websites because the user may translate the site to a language that is [written right-to-left](https://en.wikipedia.org/wiki/Writing_system#Directionality) using a machine translation service. The biggest languages with RTL scripts are Arabic ([310 million](https://en.wikipedia.org/wiki/Arabic) native speakers), Persian ([70 million](https://en.wikipedia.org/wiki/Persian_language)), and Urdu ([70 million](https://www.britannica.com/topic/Urdu-language)).
 
 ```css
-:focus:not(:focus-visible) {
-  outline: none;
+/* switch to RTL when Google translates the page to an RTL language */
+.translated-rtl {
+  direction: rtl;
 }
 ```
 
-Fortunately, these workarounds will soon become unnecessary. Chromium’s user agent stylesheet recently [switched](https://blogs.igalia.com/mrego/2021/03/01/focus-visible-in-webkit-february-2021/#default-user-agent-style-sheet) from `:focus` to `:focus-visible`, and as a result of this change, button clicks and taps no longer invoke focus rings. The new behavior will first ship in Chrome 90 next month.
+David Bushell’s personal website now [uses](https://dbushell.com/2021/02/02/changing-css-for-good-logical-properties-and-values/) logical CSS and relies on Google’s `translated-rtl` class to toggle the site’s [inline base direction](https://drafts.csswg.org/css-writing-modes-3/#inline-base-direction). Try translating David’s website to an RTL language in Chrome and compare the RTL layout with the site’s default LTR layout.
 
-# The enhanced CSS `:not()` selector enables “donut scope”
+# Chrome ships three controversial Fugu APIs
 
-I recently [wrote](https://css-tricks.com/weekly-platform-news-the-not-pseudo-class-video-media-queries-clip-path-path-support/#the-enhanced-not-pseudo-class-enables-new-kinds-of-powerful-selectors) about the `A:not(B *)` selector pattern that allows authors to select all `A` elements that are not descendants of a `B` element. This pattern can be expanded to `A B:not(C *)` to create a “[donut scope](https://twitter.com/LeaVerou/status/1354760561087676416).”
+Last week Chrome [shipped](https://blog.chromium.org/2021/01/chrome-89-beta-advanced-hardware.html) three web APIs for “advanced hardware interactions”: the WebHID and Web Serial APIs on desktop, and Web NFC on Android. All three APIs are part of Google’s capabilities project, also known as [Project Fugu](https://fugu-tracker.web.app/), and were developed in W3C community groups (they’re not web standards).
 
-For example, the selector `article p:not(blockquote *)` matches all `<p>` elements that are descendants of an `<article>` element but not descendants of a `<blockquote>` element. In other words, it selects all paragraphs in an article except the ones that are in a block quotation.
+- The **WebHID API** allows web apps to connect to old and uncommon [human interface devices](https://en.wikipedia.org/wiki/Human_interface_device) that don’t have a compatible device driver for the operating system (e.g., Nintendo’s [Wii Remote](https://medium.com/samsung-internet-dev/wiimote-on-the-web-using-webhid-8ee6a0dcd4f3)).
 
-<figure>
-  <img src="/media/css-not-donut-scope.png" alt="">
-  <figcaption>The donut shape that gives this scope its name</figcaption>
-</figure>
+- The **Web Serial API** allows web apps to communicate (“byte by byte”) with peripheral devices, such as microcontrollers (e.g., the [Arduino DHT11](https://twitter.com/kalanyei/status/1368124073138548736) temperature/humidity sensor) and 3D printers, through an [emulated](https://firt.dev/notes/chrome/#chrome-89) serial connection.
 
-INSERT CODEPEN - https://codepen.io/simevidas/pen/bGBKZzY?editors=0100
+- **Web NFC** allows web apps to wirelessly read from and write to [NFC tags](https://web.dev/nfc/#terminology) at short distances (less than 10 cm).
 
-# The New York Times now honors Global Privacy Control
-
-Announced [last October](https://globalprivacycontrol.org/press-release/20201007.html), Global Privacy Control (GPC) is a new privacy signal for the web that is designed to be legally enforceable. Essentially, it’s an HTTP `Sec-GPC: 1` request header that tells websites that the user does not want their personal data to be shared or sold.
+Apple and Mozilla, the developers of the other two major browser engines, are currently opposed to these APIs. Apple has [decided](https://webkit.org/tracking-prevention/#anti-fingerprinting) to “not yet implement due to fingerprinting, security, and other concerns.” Mozilla’s concerns are summarized on the [Mozilla Specification Positions](https://mozilla.github.io/standards-positions/) page.
 
 <figure>
-  <img src="/media/http-sec-gpc-header.png" alt="">
-  <figcaption>The DuckDuckGo Privacy Essentials extension enables GPC by default in the browser</figcaption>
+  <img src="/media/web-api-controversy.png" alt="">
+  <figcaption><a href="https://webapicontroversy.com/">webapicontroversy.com</a></figcaption>
 </figure>
 
-The New York Times has become the first major publisher to honor GPC. A number of other publishers, including The Washington Post and Automattic (WordPress.com), have committed to honoring it “[this coming quarter](https://globalprivacycontrol.org/press-release/20210128).”
+# Stretching SVG with `preserveAspectRatio=none`
 
-From [NYT’s privacy page](https://www.nytimes.com/privacy):
+By default, an SVG graphic scales to fit the `<svg>` element’s content box, while maintaining the aspect ratio defined by the `viewBox` attribute. In some cases, the author may want to stretch the SVG graphic so that it completely fills the content box on both axes. This can be achieved by setting the `preserveAspectRatio` attribute to `none` on the `<svg>` element.
 
-> **Does The Times support the Global Privacy Control (GPC)?**
->
-> Yes. When we detect a GPC signal from a reader’s browser where GDPR, CCPA or a similar privacy law applies, <mark>we stop sharing the reader’s personal data</mark> online with other companies (except with our service providers).
+INSERT VIDEO - /media/svg-preserveaspectratio-none.mp4
 
-# The case for `em`-based media queries
+INSERT CODEPEN - https://codepen.io/simevidas/full/RwoERGM
 
-Some browsers allow the user to **increase the default font size** in the browser’s settings. Unfortunately, this user preference has no effect on websites that set their font sizes in pixels (e.g., `font-size: 20px`). In part for this reason, some websites (incl. CSS-Tricks) instead use [font-relative units](https://drafts.csswg.org/css-values-4/#font-relative-lengths), such as `em` and `rem`, which _do_ respond to the user’s font size preference.
+Distorting SVG in this manner may seem [counterintuitive](https://buttondown.email/viewBox/archive/box-7-telescopes-mysteries-and-presents/), but disabling the aspect ratio via the `preserveAspectRatio=none` value can make sense for simple, decorative SVG graphics on a responsive web page:
 
-![](/media/css-tricks-font-relative-units.png)
+> This value can be useful when you are using a path for a border or to add a little effect on a section (like a diagonal [line]), and you want the path to fill the space.
 
-Ideally, a website that uses font-relative units for `font-size` should also use [`em` values in media queries](https://zellwk.com/blog/media-query-units/) (e.g., `min-width: 80em` instead of `min-width: 1280px`). Otherwise, the site’s responsive layout may not always work as expected.
+# WordPress tones down the use of italics
 
-For example, CSS-Tricks switches from a two-column to a one-column layout on narrow viewports to prevent the article’s lines from becoming too short. However, if the user increases the default font size in the browser to `24px`, the text on the page will become larger (as it should) but the page layout will not change, resulting in extremely short lines at certain viewport widths.
+An italic font can be used to highlight important words (`<em>` element), titles of creative works (`<cite>`), technical terms, foreign phrases (`<i>`), and more. Italics are helpful when used discreetly in this manner, but long sections of italic text are considered an accessibility issue and should be [avoided](https://core.trac.wordpress.org/ticket/47327).
 
-INSERT YOUTUBE VIDEO - https://www.youtube.com/watch?v=FrW9vTPGhrM
+> Italicized text can be difficult to read for some people with dyslexia or related forms of reading disorders.
 
-If you’d like to try out `em`-based media queries on your website, there is a [PostCSS plugin](https://github.com/niksy/postcss-em-media-query) that automatically converts `min-width`, `max-width`, `min-height`, and `max-height` media queries from `px` to `em`.
+<figure>
+  <img src="/media/italics-accessibility-issue.png" width="476" height="218" alt="">
+  <figcaption>Putting the entire help text in italics is not recommended</figcaption>
+</figure>
 
-([via Nick Gard](https://uxdesign.cc/say-goodbye-to-pixels-cb720fbaf250))
+WordPress 5.7, which was [released](https://wordpress.org/news/2021/03/esperanza/) earlier this week, [removed](https://wordpress.org/news/2021/02/wordpress-5-7-beta-2/) italics on descriptions, help text, labels, error details text, and other places in the WordPress admin to “improve accessibility and readability.”
 
-# A new push to bring CSS `:user-invalid` to browsers
+# Still no progress on CSS custom media queries
 
-In 2017 Peter-Paul Koch published a series of [three articles](https://twitter.com/ppk/status/942726306944442369) about native form validation on the web. [Part 1](https://www.quirksmode.org/blog/archives/2017/12/native_form_val.html) points out the problems with the widely supported CSS [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) pseudo-class:
+The CSS Media Queries Level 5 module specifies a [`@custom-media` rule](https://drafts.csswg.org/mediaqueries-5/#custom-mq) for defining custom media queries. This proposed feature was originally added to the CSS spec almost seven years ago (in [June 2014](https://www.w3.org/TR/2014/WD-mediaqueries-4-20140605/#custom-mq)) and has since then not been further developed nor received any interest from browser vendors.
 
-- The validity of `<input>` elements is re-evaluated on every key stroke, so a form field can become `:invalid` while the user is still typing the value.
+```css
+@custom-media --narrow-window (max-width: 30em);
 
-- If a form field is required (`<input required>`), it will become `:invalid` immediately on page load.
+@media (--narrow-window) {
+  /* narrow window styles */
+}
+```
 
-Both of these behaviors are potentially confusing (and [annoying](https://twitter.com/ryanflorence/status/1354502174332444673)), so websites cannot rely solely on the `:invalid` selector to indicate that a value entered by the user is not valid. However, there is the option to [combine](https://www.bram.us/2021/01/28/form-validation-you-want-notfocusinvalid-not-invalid/) `:invalid` with `:not(:focus)` and even `:not(:placeholder-shown)` to ensure that the page’s “invalid” styles do not apply to the `<input>` until the user has finished entering the value and moved focus to another element.
+> A media query used in multiple places can instead be assigned to a custom media query, which can be used everywhere, and editing the media query requires touching only one line of code.
 
-INSERT CODEPEN - https://codepen.io/bramus/pen/ExNYBOK?editors=0100
+Custom media queries may not ship in browsers for quite some time, but websites can start using this feature today via the official [PostCSS plugin](https://github.com/postcss/postcss-custom-media) (or [PostCSS Preset Env](https://github.com/csstools/postcss-preset-env)) to reduce code repetition and make media queries [more readable](https://twitter.com/argyleink/status/1356651962754760705).
 
-The CSS Selectors module defines a [`:user-invalid`](https://drafts.csswg.org/selectors/#user-pseudos) pseudo-class that avoids the problems of `:invalid` by only matching an `<input>` “after the user has significantly interacted with it.”
+On a related note, there is also the idea of [author-defined environment variables](https://twitter.com/AmeliasBrain/status/1368790507036364801), which (unlike custom properties) could be used in media queries, but this potential feature has not yet been fully fleshed out in the CSS spec.
 
-![](/media/css-user-invalid-example.png)
-
-Firefox already supports this functionality via the `:-moz-ui-invalid` pseudo-class (see it in action [here](https://twitter.com/simevidas/status/1366281785122955264)). Mozilla now [intends](https://groups.google.com/g/mozilla.dev.platform/c/rEYMl79krS8/m/UI_kwzatCAAJ) to un-prefix this pseudo-class and ship it under the standard `:user-invalid` name. There are still no signals from other browser vendors, but the Chromium and WebKit bugs for this feature have been filed.
+```css
+@media (max-width: env(--narrow-window)) {
+  /* narrow window styles */
+}
+```
