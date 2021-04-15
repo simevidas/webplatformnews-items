@@ -1,90 +1,117 @@
-# Rounded outlines are coming to Firefox
+# Now may be a good time to start using `:focus-visible`
 
-The idea to have the outline follow the border curve has existed ever since it became possible to create rounded borders via the `border-radius` property in the mid 2000s. It was suggested to [Mozilla](https://bugzilla.mozilla.org/show_bug.cgi?id=315209), [WebKit](https://bugs.webkit.org/show_bug.cgi?id=25293#c2), and [Chromium](https://bugs.chromium.org/p/chromium/issues/detail?id=81556) over ten years ago, and it’s even been part of the [CSS UI specification](https://drafts.csswg.org/css-ui/#outline-color) since 2015:
+The CSS `:focus-visible` pseudo-class replaces `:focus` as the new way to create custom focus indicators for keyboard users. Chrome itself recently switched from `:focus` to `:focus-visible` in the user agent stylesheet, and as a result of that change, the default focus ring is [no longer shown](https://css-tricks.com/weekly-platform-news-focus-rings-donut-scope-ditching-em-units-and-global-privacy-control/#chrome-will-stop-displaying-focus-rings-when-clicking-buttons) when the user clicks or taps a button.
 
-> The parts of the outline are not required to be rectangular. To the extent that the outline follows the border edge, <mark>it should follow the `border-radius` curve</mark>.
-
-Fast-forward to today and outlines are still rectangles in every browser without exception:
-
-INSERT CODEPEN - https://codepen.io/simevidas/pen/JjEExRo?editors=0100
-
-But this is finally starting to change. In a few weeks, Firefox will [become](https://groups.google.com/g/mozilla.dev.platform/c/VJhM6SSQd-4/m/x3B45oatCAAJ) the first browser with rounded outlines that automatically follow the border shape. This will also apply to Firefox’s default focus outline on buttons.
-
-![](/media/button-focus-outine-comparison.png)
-
-Please star Chromium [issue 81556](https://bugs.chromium.org/p/chromium/issues/detail?id=81556) (you’ll need to sign in first) to help prioritize this bug and bring rounded outlines to Chrome sooner rather than later.
-
-# SVG animations are now GPU-accelerated in Chrome
-
-Until recently, animating an SVG element via CSS would trigger repaint on every frame (usually 60 times per second) in Chromium-based browsers. Such constant repainting can have a negative impact on the smoothness of the animation and the performance of the page itself.
-
-The latest version of Chrome has eliminated this performance issue by [enabling](https://developer.chrome.com/blog/hardware-accelerated-animations/#hardware-accelerated-svg-animations) hardware acceleration for SVG animations. This means that SVG animations are offloaded to the GPU and no longer run on the main thread.
-
-<figure>
-  <img src="/media/hardware-accelerated-svg-animations.png" alt="">
-  <figcaption>In this example, the SVG circle is continuously faded in and out via a CSS animation (<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=330199#c19">see code</a>)</figcaption>
-</figure>
-
-The switch to GPU acceleration automatically made SVG animations more performant in Chromium-based browsers ([Firefox does this too](https://twitter.com/cassiecodes/status/1364524280864792576)), which is definitely [good news](https://twitter.com/cassiecodes/status/1360522611759931393) for the web:
-
-> Hooray for more screen reader-accessible, progressively enhanced SVG animations and less Canvas.
-
-# There cannot be real physical units in CSS
-
-CSS defines six [physical units](https://drafts.csswg.org/css-values/#absolute-lengths), including `in` (inches) and `cm` (centimeters). Every physical unit is in a fixed ratio with the pixel unit, which is the canonical unit. For example, `1in` is always exactly `96px`. On most modern screens, this length does not correspond to 1 real-world inch.
-
-The FAQ page of the CSS Working Group now [answers](https://wiki.csswg.org/faq#real-physical-lengths) the question why there can’t be real physical units in CSS. In short, the browser cannot always determine the exact size and resolution of the display (think projectors). For websites that need accurate real-world units, the Working Group recommends per-device calibration:
-
-> Have a calibration page, where you ask the user to measure the distance between two lines that are some CSS distance apart (say, `10cm`), and input the value they get. Use this to find the scaling factor necessary for that screen (CSS length divided by user-provided length).
-
-This scaling factor can then be set to a custom property and used to compute accurate lengths in CSS:
+When switching from `:focus` to `:focus-visible`, consider backwards compatibility. Your keyboard focus indicators should be clearly visible in all browsers, not just the ones that [support `:focus-visible`](https://caniuse.com/css-focus-visible). If you only style `:focus-visible`, non-supporting browsers will show the default focus ring, which depending on your design “[may not be sufficiently clear or visible at all](https://www.tpgi.com/focus-visible-and-backwards-compatibility/#comment-1184).”
 
 ```css
-html {
-  --unit-scale: 1.428;
+button {
+  background: white;
 }
 
-.box {
-  /* 5 real-world centimeters */
-  width: calc(5cm * var(--unit-scale, 1));
+button:focus-visible {
+  outline: none;
+  background: #ffdd00; /* gold */
 }
 ```
 
-# The Times crossword is accessible to screen reader users
+![](/media/safari-focus-ring-invisible.png)
 
-The NYT Open team [wrote](https://open.nytimes.com/a-more-accessible-web-fa87592da6d2) about some of the improvements to the New York Times website that have made it more accessible in recent years. The website uses semantic HTML (`<article>`, `<nav>`, etc.), increased contrast on important components (e.g., login and registration), and skip-to-content links that adapt to the site’s paywall.
+A good way to start using `:focus-visible` today is to define the focus styles in a `:focus` rule and then immediately undo these same styles in a `:focus:not(:focus-visible)` rule. This is admittedly not the most elegant and intuitive pattern, but it works well in all browsers:
 
-Furthermore, the Games team made the daily crossword puzzle accessible to keyboard and screen reader users. The crossword is implemented as a grid of SVG `<rect>` elements. As the user navigates through the puzzle, the current square’s `aria-label` attribute (accessible name) is dynamically updated to provide additional context.
-
-<figure>
-  <img src="/media/times-crossword-voiceover.png" alt="">
-  <figcaption>The screen reader announces the clue, the number of letters in the solution, and the position of the selected square</figcaption>
-</figure>
-
-You can play the [mini crossword](https://www.nytimes.com/crosswords/game/mini) without an account. Try solving the puzzle with the keyboard.
-
-# CSS variables are resolved before the value is inherited
-
-Yuan Chuan recently [shared](https://twitter.com/yuanchuan23/status/1365949896826572802) a little CSS quiz that I didn’t answer correctly because I wasn’t sure if a CSS variable (the `var()` function) is resolved before or after the value is inherited. I’ll try to explain how this works on the following example:
+- Browsers that don’t support `:focus-visible` use the focus styles defined in the `:focus` rule and ignore the second style rule completely (because `:focus-visible` is unknown to them).
+- In browsers that do support `:focus-visible`, the second style rule reverts the focus styles defined in the `:focus` rule if the `:focus-visible` state isn’t active as well. In other words, the focus styles defined in the `:focus` rule are only in effect when `:focus-visible` is also active.
 
 ```css
-html {
-  --text-color: var(--main-color, black);
+button:focus {
+  outline: none;
+  background: #ffdd00; /* gold */
 }
 
-footer {
-  --main-color: brown;
-}
-
-p {
-  color: var(--text-color);
+button:focus:not(:focus-visible) {
+  background: white; /* undo gold */
 }
 ```
 
-The question: Is the color of the paragraph in the footer `black` or `brown`? There are two possibilities. Either (A) the declared values of both custom properties are inherited to the paragraph, and then the `color` property resolves to `brown`, or (B) the `--text-color` property resolves to `black` directly on the `<html>` element, and then this value is inherited to the paragraph and assigned to the `color` property.
+# The BBC created a more accessible typeface
 
-![](/media/css-variables-resolution-inheritance.png)
+The BBC [created](https://abilitynet.org.uk/news-blogs/accessible-typeface-designed-bbc) their own custom typeface called Reith (named after the BBC’s founder Sir John Reith). Their goal was to create a font that supports multiple languages and is easier to read, especially on small devices. The font was tested with mixed-ability user groups (dyslexia and vision impairment) and across different screen sizes.
 
-The correct answer is option B ([the color is black](https://codepen.io/simevidas/pen/mdROgWe?editors=0100)). CSS variables are resolved _before_ the value is inherited. In this case, `--text-color` falls back to `black` because `--main-color` does not exist on the `<html>` element. This rule is specified in the [CSS Variables module](https://drafts.csswg.org/css-variables/#cycles):
+> We [the BBC] were using Helvetica or Arial. We also had Gill Sans as the corporate typeface. These typefaces were designed a hundred years ago for the printed page [and] don’t perform well on today’s modern digital screens.
 
-> It is important to note that custom properties resolve any `var()` functions in their values at computed-value time, which occurs before the value is inherited.
+<figure>
+    <img src="/media/bbc-sport-reith-sans.jpg" alt="">
+    <figcaption>Reith Sans can bee seen in use on <a href="https://www.bbc.com/sport">BBC Sport</a></figcaption>
+</figure>
+
+**Note:** If you’d like to inspect Reith Sans and Reith Serif in [Wakamai Fondue](https://wakamaifondue.com/beta/), you can quickly access the URLs of the WOFF2 files in the “All fonts on page” section of the Fonts pane in Firefox’s DOM inspector on BBC’s website.
+
+# `display: contents` is still not accessible in Safari
+
+The CSS `display: contents` value is supported in browsers [since 2018](https://css-tricks.com/get-ready-for-display-contents/). An element with this value “[does not generate any boxes](https://drafts.csswg.org/css-display/#box-generation)” and is effectively replaced by its children. This is especially useful in flex and grid layouts, where the `contents` value can be used to “promote” more deeply nested elements to flex/grid items while retaining a semantic document structure.
+
+<figure>
+    <img src="/media/css-display-contents-semantic-structure.png" alt="">
+    <figcaption>Source: <a href="https://blogs.igalia.com/mrego/2018/01/11/display-contents-is-coming/">Manuel Rego Casasnovas</a></figcaption>
+</figure>
+
+Unfortunately, this feature originally shipped with an [implementation bug](https://github.com/w3c/csswg-drafts/issues/3040) that removed the element from the browser’s accessibility tree. For example, applying `display: contents` to a `<ul>` element had as a consequence that the element was no longer mentioned by screen readers. Since then, this bug has been fixed in Firefox and Chrome ([in the latest version](https://rachelandrew.co.uk/archives/2021/03/11/good-news-about-display-contents-and-chrome/)).
+
+INSERT VIDEO - /media/css-display-contents-screen-reader.mp4
+
+VIDEO CAPTION: ([code on CodePen](https://codepen.io/simevidas/pen/MWJGRaJ?editors=1100))
+
+In Chrome and Firefox, the screen reader informs the user that the “Main, navigation” contains a “list, 2 items.” In Safari, the latter part is missing because the `<ul>` and `<li>` elements are not present in the accessibility tree. Until Apple fixes this [bug in Safari](https://bugs.webkit.org/show_bug.cgi?id=185679), be careful when using the `contents` value on semantic elements and test in screen readers to confirm that your pages are accessible in Safari as well.
+
+# Set `opacity` when overriding the color of placeholder text
+
+Accessibility experts recommend [avoiding placeholders](https://www.deque.com/blog/accessible-forms-the-problem-with-placeholders/) if possible because they can be confused for pre-populated text and disappear when the user starts entering a value. However, many websites (including Wikipedia and GOV.UK) use placeholders in simple web forms that contain only a single input field, such as a search field.
+
+<figure>
+    <img src="/media/css-tricks-newsletter-form.png" alt="">
+    <figcaption>The subscription form for the CSS-Tricks newsletter uses a placeholder in the email field</figcaption>
+</figure>
+
+Placeholders can be styled via the widely supported `::placeholder` pseudo-element. If your design calls for a custom color for placeholder text, make sure to specify both `color` and `opacity`. The latter is needed for Firefox, which [applies](https://searchfox.org/mozilla-central/source/layout/style/res/forms.css#213-215) `opacity: 0.54` to `::placeholder` by default. If you don’t override this value, your placeholder text may have insufficient contrast in Firefox.
+
+```css
+.search-field::placeholder {
+  color: #727272;
+  opacity: 1; /* needed for Firefox */
+}
+```
+
+<figure>
+    <img src="/media/ebay-placeholder-contrast-issue.png" alt="">
+    <figcaption>The placeholder text on eBay’s website is lighter in Firefox and doesn’t meet the <a href="https://w3c.github.io/wcag/guidelines/#contrast-minimum">minimum contrast requirement</a> of 4.5:1</figcaption>
+</figure>
+
+# Declarative Shadow DOM could help popularize style encapsulation
+
+One of the key features of Shadow DOM is style encapsulation, wherein the outer page’s style rules don’t match elements inside the shadow tree, and vice versa. In order to use this feature, you need to attach a shadow DOM tree to an element (usually, a custom element like `<my-element>`) and copy the element’s template (usually, from a `<template>` element in the DOM) to the element’s newly created shadow DOM.
+
+These steps can only be performed in JavaScript. If you’re only interested in style encapsulation and don’t need any dynamic functionality for your element, here is the [minimum amount of JavaScript](https://twitter.com/MiriSuzanne/status/1369347329652756481) required to create a custom element with a shadow DOM:
+
+```js
+customElements.define(
+  "my-element",
+  class extends HTMLElement {
+    constructor() {
+      super();
+
+      // find <template id="my-template"> in the DOM
+      let template = document.getElementById("my-template");
+
+      // make a copy of the template contents…
+      let content = template.content.cloneNode(true);
+
+      // …and inject it into <my-element>’s shadow DOM
+      this.attachShadow({ mode: "open" }).appendChild(content);
+    }
+  }
+);
+```
+
+For an example of style encapsulation, see Miriam Suzanne’s `<media-object>` element [on CodePen](https://codepen.io/mirisuzanne/pen/GRNwmpm). The scoped styles are located in the `<template>` element in the HTML pane. Notice how this CSS code can use simple selectors, such as `article`, that only match elements inside `<media-object>`’s shadow DOM.
+
+JavaScript may soon no longer be required to create this type of style encapsulation in modern browsers. Earlier this week, Chrome became the first browser to ship Google’s [Declarative Shadow DOM](https://developer.chrome.com/en/blog/new-in-chrome-90/#declarative) proposal. If it becomes a standard, this feature will also make it possible to use Shadow DOM in combination with server-side rendering.
