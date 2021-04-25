@@ -136,7 +136,7 @@ labeled-checkbox:--checked {
 ```
 
 <figure>
-    <video src="custom-state-pseudo-class.mp4" controls></video>
+    <video src="custom-state-pseudo-class.mp4" controls>⚠️  The video could not be rendered</video>
     <figcaption>(<a href="https://codepen.io/simevidas/pen/ZELwEBy">Try the demo in Chrome</a>)</figcaption>
 </figure>
 
